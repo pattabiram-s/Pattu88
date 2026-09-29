@@ -161,9 +161,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   background: linear-gradient(165deg, var(--surface), var(--surface-2)); box-shadow: var(--shadow);
 }
 .hero__avatar {
-  width: 62px; height: 62px; border-radius: 16px; display: grid; place-items: center;
-  font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; color: #fff;
-  background: linear-gradient(135deg, var(--accent), var(--accent-3)); margin-bottom: 1rem; letter-spacing: .02em;
+  width: 72px; height: 72px; border-radius: 18px; object-fit: cover;
+  margin-bottom: 1rem;
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 2px var(--accent), var(--shadow-sm);
 }
 .hero__role { font-family: var(--font-display); font-weight: 600; color: var(--text); margin-bottom: 1rem; }
 .hero__facts { display: grid; gap: .7rem; }
