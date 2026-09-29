@@ -1,42 +1,11 @@
 /* =========================================================
-   Pattabi — Solutions Architect · Portfolio interactions
+   Pattabi Ram S — Portfolio interactions
    Progressive enhancement: the site is fully usable without JS.
    ========================================================= */
 (function () {
   "use strict";
 
-  const root = document.documentElement;
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  /* ---------- Theme (persisted, respects system default) ---------- */
-  const THEME_KEY = "pattabi-theme";
-  const themeToggle = document.getElementById("themeToggle");
-
-  function getInitialTheme() {
-    try {
-      const stored = localStorage.getItem(THEME_KEY);
-      if (stored === "light" || stored === "dark") return stored;
-    } catch (_) { /* storage may be blocked */ }
-    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-  }
-
-  function applyTheme(theme) {
-    root.setAttribute("data-theme", theme);
-    if (themeToggle) {
-      themeToggle.setAttribute("aria-label",
-        theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
-    }
-  }
-
-  applyTheme(getInitialTheme());
-
-  if (themeToggle) {
-    themeToggle.addEventListener("click", function () {
-      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      applyTheme(next);
-      try { localStorage.setItem(THEME_KEY, next); } catch (_) {}
-    });
-  }
 
   /* ---------- Mobile menu ---------- */
   const menuToggle = document.getElementById("menuToggle");
@@ -67,8 +36,7 @@
     if (nav) nav.classList.toggle("is-scrolled", y > 8);
     if (progress) {
       const h = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = h > 0 ? (y / h) * 100 : 0;
-      progress.style.width = pct + "%";
+      progress.style.width = (h > 0 ? (y / h) * 100 : 0) + "%";
     }
   }
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -82,9 +50,7 @@
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
-          // gentle stagger for groups revealing together
-          const delay = Math.min(i * 60, 240);
-          setTimeout(() => entry.target.classList.add("is-visible"), delay);
+          setTimeout(() => entry.target.classList.add("is-visible"), Math.min(i * 60, 240));
           io.unobserve(entry.target);
         }
       });
