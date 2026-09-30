@@ -1,38 +1,34 @@
-# Personal Website — Pattabi, Solutions Architect
+# Personal Website · Pattabi Ram S
 
-A fast, accessible, single-page portfolio built with plain HTML, CSS, and JavaScript.
-No build step, no dependencies — deploys as-is to GitHub Pages, Netlify, Cloudflare Pages, or any static host.
+A fast, accessible portfolio site built with plain HTML, CSS, and JavaScript. No build step,
+no dependencies, and no tracking. Deploys as-is to GitHub Pages.
 
-## Structure
+## Files
 
 | File | Purpose |
 |------|---------|
-| `index.html` | Page content and structure (semantic HTML) |
-| `styles.css` | Design tokens, layout, components, responsive rules |
-| `main.js` | Theme toggle, scroll progress, reveal animations (progressive enhancement) |
+| `index.html` | Main page: hero, about, expertise, experience, projects, certifications, contact |
+| `privacy.html` | Privacy policy |
+| `terms.html` | Terms and conditions |
+| `styles.css` | Design tokens, layout, and components (single light theme) |
+| `main.js` | Mobile menu toggle and footer year (progressive enhancement) |
+| `favicon.svg` | Site icon |
+| `headshot.jpg` | Profile photo |
+| `Pattabi-Ram-S-Resume.pdf` | Downloadable résumé |
 
-## Design notes
+## Design principles
 
-- **Dark/light themes** via a `data-theme` attribute, persisted in `localStorage` and defaulting to the visitor's system preference.
-- **Accessibility**: semantic landmarks, skip link, visible focus states, `prefers-reduced-motion` support, and WCAG AA+ contrast.
-- **Performance**: no framework, system + Google fonts, CSS-driven animations, `IntersectionObserver` for reveals.
-- **Responsive**: mobile-first, works from 320px up.
+- One light theme with a single emerald accent. No purple gradients, no gradient text.
+- Plain, factual copy. No invented metrics, reviews, or customer counters.
+- SVG line icons, not emoji.
+- No decorative scroll, cursor, or hover animation.
+- Semantic HTML, skip link, visible focus states, and WCAG AA+ contrast.
+- Responsive and mobile-first.
 
-## Make it yours
+## Editing
 
-Everything you'll want to change is plain text in `index.html`:
-
-1. **Name** — replace `Pattabi` (nav brand, hero, footer).
-2. **Headline & bio** — the `.hero` and `#about` sections.
-3. **Expertise / Work / Experience** — edit the cards, projects, and timeline items.
-4. **Contact links** — update the `mailto:`, GitHub, and LinkedIn URLs in `#contact`.
-5. **Brand colors** — tweak `--accent`, `--accent-2`, `--accent-3` at the top of `styles.css`.
-
-## Deploy to GitHub Pages
-
-1. Push to your `main` (or default) branch.
-2. Repo **Settings → Pages → Build and deployment → Source: Deploy from a branch**.
-3. Choose the branch and `/root`. Your site publishes at `https://pattu88.github.io/pattu88/` (or your custom domain).
+All content is plain text in `index.html`. Colours are defined once at the top of
+`styles.css` (`--accent` and friends).
 
 ## Local preview
 
@@ -40,3 +36,7 @@ Everything you'll want to change is plain text in `index.html`:
 python3 -m http.server 8000
 # then open http://localhost:8000
 ```
+
+## Deploy (GitHub Pages)
+
+Settings → Pages → Deploy from a branch → `main` → `/root`.
