@@ -93,7 +93,9 @@ dl, dd { margin: 0; }
 
 /* Faded, slowly cross-fading personal background */
 .hero__bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
-.hero__bg-img { position: absolute; inset: 0; background-size: cover; background-position: 70% center; will-change: opacity, transform; }
+.hero__bg-img { position: absolute; inset: 0; background-size: cover; background-position: 70% center; filter: grayscale(0.85) contrast(0.95); will-change: opacity, transform; }
+/* Emerald tint over the desaturated photos so they sit in the theme */
+.hero__bg-img::after { content: ""; position: absolute; inset: 0; background: var(--accent); opacity: .22; mix-blend-mode: multiply; }
 .hero__bg-img--1 { background-image: url("hero-bg-1.jpg"); opacity: .4; animation: heroFadeA 26s ease-in-out infinite; }
 .hero__bg-img--2 { background-image: url("hero-bg-2.jpg"); opacity: 0; animation: heroFadeB 26s ease-in-out infinite; }
 .hero__bg-scrim { position: absolute; inset: 0; background:
@@ -116,11 +118,22 @@ dl, dd { margin: 0; }
 }
 
 .hero__inner { position: relative; z-index: 1; display: grid; gap: 2rem clamp(2rem, 5vw, 3rem); }
+
+/* Staggered hero entrance */
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes drawLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.hero__text > * { animation: rise .6s var(--ease) both; }
+.hero .eyebrow { animation-delay: .05s; }
+.hero__title { animation-delay: .16s; }
+.hero__lead { animation-delay: .3s; }
+.hero__cta { animation-delay: .44s; }
+.hero__facts-row { animation-delay: .56s; }
+.hero__card { animation: rise .6s var(--ease) .34s both; }
 .eyebrow { display: inline-flex; align-items: center; gap: .5rem; font-size: .82rem; font-weight: 600; color: var(--accent-strong); background: var(--surface); border: 1px solid var(--border); padding: .4rem .85rem; border-radius: 999px; margin-bottom: 1.3rem; }
 .eyebrow__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 .hero__title { font-size: clamp(2.3rem, 5.6vw, 3.6rem); font-weight: 700; max-width: 17ch; margin-bottom: 1.2rem; }
 .hero__title .accent { position: relative; white-space: nowrap; }
-.hero__title .accent::after { content: ""; position: absolute; left: 0; right: 0; bottom: .06em; height: .22em; background: var(--warm-soft); z-index: -1; border-radius: 2px; }
+.hero__title .accent::after { content: ""; position: absolute; left: 0; right: 0; bottom: .06em; height: .22em; background: var(--warm-soft); z-index: -1; border-radius: 2px; transform: scaleX(0); transform-origin: left; animation: drawLine .55s var(--ease) .62s both; }
 .hero__lead { font-size: clamp(1rem, 1.8vw, 1.16rem); color: var(--text-soft); max-width: 58ch; margin-bottom: 1.6rem; }
 .hero__cta { display: flex; flex-wrap: wrap; gap: .7rem; margin-bottom: 1.6rem; }
 .hero__facts-row { display: flex; flex-wrap: wrap; gap: .5rem .6rem; }
@@ -142,7 +155,8 @@ dl, dd { margin: 0; }
 .section__head { display: flex; align-items: baseline; gap: .9rem; margin-bottom: 1rem; }
 .section__index { font-size: .9rem; color: var(--warm); font-weight: 700; }
 .section__title { font-size: clamp(1.7rem, 4vw, 2.4rem); font-weight: 700; position: relative; }
-.section__title::after { content: ""; display: block; width: 44px; height: 3px; margin-top: .55rem; background: var(--accent); border-radius: 2px; }
+.section__title::after { content: ""; display: block; width: 44px; height: 3px; margin-top: .55rem; background: var(--accent); border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform .5s var(--ease) .12s; }
+.section__head.is-visible .section__title::after { transform: scaleX(1); }
 .section__intro { color: var(--text-soft); font-size: 1.02rem; max-width: 56ch; margin: 0 0 2rem; }
 .section__head + .about, .section__head + .timeline, .section__head + .two-col { margin-top: 1.2rem; }
 
@@ -159,8 +173,8 @@ dl, dd { margin: 0; }
 .cards { display: grid; grid-template-columns: 1fr; gap: 1rem; }
 .card { padding: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); transition: transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease); }
 .card:hover { transform: translateY(-4px); border-color: var(--border-strong); box-shadow: var(--shadow-lift); }
-.card__icon { display: inline-grid; place-items: center; width: 42px; height: 42px; border-radius: 9px; background: var(--accent-soft); color: var(--accent); margin-bottom: .9rem; transition: background .22s var(--ease), color .22s var(--ease); }
-.card:hover .card__icon { background: var(--accent); color: #fff; }
+.card__icon { display: inline-grid; place-items: center; width: 42px; height: 42px; border-radius: 9px; background: var(--accent-soft); color: var(--accent); margin-bottom: .9rem; transition: background .22s var(--ease), color .22s var(--ease), transform .3s var(--ease); }
+.card:hover .card__icon { background: var(--accent); color: #fff; transform: translateY(-2px) rotate(-6deg); }
 .card__icon svg { width: 22px; height: 22px; }
 .card h3 { font-size: 1.14rem; margin-bottom: .5rem; }
 .card p { color: var(--text-soft); font-size: .95rem; margin-bottom: 1rem; }
@@ -237,14 +251,16 @@ dl, dd { margin: 0; }
 .legal .back { display: inline-block; margin-top: 2.5rem; font-weight: 600; color: var(--accent-strong); }
 
 /* ---------- Reveal (subtle, gated by reduced-motion) ---------- */
-.reveal { opacity: 0; transform: translateY(12px); transition: opacity .55s var(--ease), transform .55s var(--ease); }
-.reveal.is-visible { opacity: 1; transform: none; }
+.reveal { opacity: 0; transform: translateY(16px); filter: blur(5px); transition: opacity .6s var(--ease), transform .6s var(--ease), filter .6s var(--ease); }
+.reveal.is-visible { opacity: 1; transform: none; filter: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  * { transition: none !important; }
-  .reveal { opacity: 1; transform: none; }
-  .hero__bg-img { animation: none !important; transform: none !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; filter: none; }
+  .hero__text > *, .hero__card { opacity: 1; transform: none; }
+  .hero__title .accent::after, .section__title::after { transform: none !important; }
+  .hero__bg-img { transform: none !important; }
   .hero__bg-img--1 { opacity: .34; }
   .hero__bg-img--2 { opacity: 0; }
 }
