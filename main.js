@@ -56,6 +56,33 @@
     skills.forEach(function (s) { sio.observe(s); });
   }
 
+  /* ---------- Count-up on real stat numbers ---------- */
+  var counters = document.querySelectorAll("[data-count]");
+  function countUp(el) {
+    var target = parseInt(el.getAttribute("data-count"), 10) || 0;
+    var suffix = el.getAttribute("data-suffix") || "";
+    if (reduce) { el.textContent = target + suffix; return; }
+    var start = null, dur = 1100;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var val = Math.round((1 - Math.pow(1 - p, 3)) * target);
+      el.textContent = val + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if (reduce || !("IntersectionObserver" in window)) {
+    counters.forEach(countUp);
+  } else {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { countUp(entry.target); cio.unobserve(entry.target); }
+      });
+    }, { threshold: 0.6 });
+    counters.forEach(function (c) { cio.observe(c); });
+  }
+
   /* ---------- Scrollspy: highlight current section in nav ---------- */
   var navLinks = Array.prototype.slice.call(document.querySelectorAll("#navLinks a"));
   var byId = {};
