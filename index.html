@@ -56,131 +56,147 @@
     <span id="top"></span>
 
     <!-- ============ HERO ============ -->
-    <section class="hero container" aria-labelledby="hero-title">
-      <div class="hero__text">
-        <p class="eyebrow">Bengaluru, India · Open to new opportunities</p>
-        <h1 id="hero-title" class="hero__title">
-          I build and operate <span class="accent">reliable cloud infrastructure</span>.
-        </h1>
-        <p class="hero__lead">
-          I'm Pattabi Ram S, an SRE Lead and AWS-certified architect with 14+ years of
-          experience. I design high-availability systems, containerize and run workloads
-          on Kubernetes, and build the CI/CD and monitoring that keep them dependable.
-        </p>
-        <div class="hero__cta">
-          <a class="btn" href="#experience">View experience</a>
-          <a class="btn btn--ghost" href="Pattabi-Ram-S-Resume.pdf" download>Download résumé</a>
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__text reveal">
+          <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>SRE Lead · Cloud &amp; DevOps Architect</p>
+          <h1 id="hero-title" class="hero__title">
+            Reliability is the <span class="accent">feature I ship</span>.
+          </h1>
+          <p class="hero__lead">
+            I'm Pattabi Ram S. For 14+ years I've kept production honest, designing
+            high-availability systems, moving workloads onto Kubernetes, and building the
+            pipelines and monitoring that let teams sleep at night, across AWS, Azure, and
+            on-premise infrastructure.
+          </p>
+          <div class="hero__cta">
+            <a class="btn" href="#experience">See my work</a>
+            <a class="btn btn--ghost" href="Pattabi-Ram-S-Resume.pdf" download>Download résumé</a>
+          </div>
+          <ul class="hero__facts-row" aria-label="Quick facts">
+            <li>Bengaluru, India</li>
+            <li>Open to new roles</li>
+            <li>AWS SA Professional</li>
+          </ul>
         </div>
-      </div>
 
-      <aside class="hero__card">
-        <img class="hero__avatar" src="headshot.jpg" width="72" height="72"
-             alt="Portrait of Pattabi Ram S" loading="eager" decoding="async" />
-        <p class="hero__role">SRE Lead · Cloud &amp; DevOps Architect</p>
-        <dl class="hero__facts">
-          <div><dt>Current</dt><dd>DigiBoxx Technologies</dd></div>
-          <div><dt>Focus</dt><dd>AWS · Kubernetes · SRE</dd></div>
-          <div><dt>Certified</dt><dd>AWS SA Professional &amp; Security</dd></div>
-        </dl>
-      </aside>
+        <aside class="hero__card reveal">
+          <img class="hero__avatar" src="headshot.jpg" width="76" height="76"
+               alt="Portrait of Pattabi Ram S" loading="eager" decoding="async" />
+          <p class="hero__role">Pattabi Ram S</p>
+          <p class="hero__role-sub">SRE Lead at DigiBoxx Technologies</p>
+          <dl class="hero__facts">
+            <div><dt>Focus</dt><dd>AWS · Kubernetes · SRE</dd></div>
+            <div><dt>Clouds</dt><dd>AWS · Azure · DigitalOcean</dd></div>
+            <div><dt>Certified</dt><dd>AWS SA Professional &amp; Security</dd></div>
+          </dl>
+        </aside>
+      </div>
     </section>
 
     <!-- ============ ABOUT ============ -->
-    <section id="about" class="section container" aria-labelledby="about-title">
-      <div class="section__head">
+    <section id="about" class="section container">
+      <div class="section__head reveal">
         <span class="section__index">01</span>
-        <h2 id="about-title" class="section__title">About</h2>
+        <h2 class="section__title">About</h2>
       </div>
       <div class="about">
-        <div class="about__lead">
+        <div class="about__lead reveal">
           <p>
-            I'm a critical-thinking AWS architect with a strong grounding in high-availability
-            architecture. Over 14 years I've grown from systems administration into SRE and
-            DevOps leadership, architecting, migrating, and operating production platforms
-            across AWS, Azure, DigitalOcean, and on-premise VMware.
+            I started out racking servers and answering support calls, and I never lost that
+            operator's instinct. Over 14 years I grew into SRE and DevOps leadership, architecting,
+            migrating, and running production platforms across AWS, Azure, DigitalOcean, and
+            on-premise VMware.
           </p>
           <p>
-            My work centres on continuous delivery, containerisation, and reliability. I build
-            CI/CD pipelines, containerise legacy applications, stand up Kubernetes clusters, and
-            wire up monitoring so teams can ship confidently and recover quickly. I also lead
-            cost optimisation, disaster recovery, and security hardening.
+            The thread through all of it is reliability. I build CI/CD pipelines, containerise
+            stubborn legacy applications, stand up Kubernetes clusters, and wire up monitoring so
+            problems surface before users feel them. I care just as much about cost, disaster
+            recovery, and security as I do about uptime.
           </p>
         </div>
-        <ul class="about__principles">
-          <li><strong>Design for high availability.</strong> Load balancing, failover, and disaster recovery built in from the start.</li>
-          <li><strong>Automate the repeatable.</strong> Infrastructure as code and pipelines over manual, error-prone steps.</li>
-          <li><strong>Measure before optimising.</strong> Metrics, logs, and alerts on every system.</li>
-          <li><strong>Keep costs in view.</strong> Right-sized, waste-free infrastructure.</li>
-        </ul>
+        <div class="reveal">
+          <h3 class="about__subhead">How I work</h3>
+          <ul class="about__principles">
+            <li><strong>Design for the bad day.</strong> Load balancing, failover, and disaster recovery are in from the start, not bolted on later.</li>
+            <li><strong>Automate the repeatable.</strong> Infrastructure as code and pipelines beat manual, error-prone steps every time.</li>
+            <li><strong>Measure before optimising.</strong> Every system gets metrics, logs, and alerts I actually trust.</li>
+            <li><strong>Respect the bill.</strong> Right-sized, waste-free infrastructure is part of good engineering.</li>
+          </ul>
+        </div>
       </div>
     </section>
 
     <!-- ============ EXPERTISE ============ -->
-    <section id="expertise" class="section container" aria-labelledby="exp-title">
-      <div class="section__head">
-        <span class="section__index">02</span>
-        <h2 id="exp-title" class="section__title">Expertise</h2>
-      </div>
-      <div class="cards">
-        <article class="card">
-          <span class="card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-8.97 6 6 0 0 0-11.64-1.6A4 4 0 0 0 6.5 19z"/></svg>
-          </span>
-          <h3>AWS &amp; Cloud</h3>
-          <p>High-availability architecture on AWS, Azure, DigitalOcean, and Rackspace, covering VPC design, IAM, RDS, S3, Route 53, ELB, and cost optimisation.</p>
-          <ul class="tags"><li>VPC</li><li>IAM</li><li>Route 53</li><li>RDS</li><li>Lambda</li></ul>
-        </article>
-        <article class="card">
-          <span class="card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>
-          </span>
-          <h3>Containers &amp; Orchestration</h3>
-          <p>Containerising legacy applications and running them on Kubernetes, EKS, ECS, Docker Swarm, and DC/OS Mesos, with deployments, statefulsets, and network policies.</p>
-          <ul class="tags"><li>Kubernetes</li><li>EKS / ECS</li><li>Docker</li><li>Docker Swarm</li></ul>
-        </article>
-        <article class="card">
-          <span class="card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 4v4h-4"/><path d="M3 20v-4h4"/></svg>
-          </span>
-          <h3>CI/CD &amp; Automation</h3>
-          <p>End-to-end pipelines with Jenkins, GitLab CI, and AWS Code services, with SonarQube quality gates, Harbor registry, and Trivy image scanning.</p>
-          <ul class="tags"><li>Jenkins</li><li>GitLab CI</li><li>SonarQube</li><li>Trivy</li></ul>
-        </article>
-        <article class="card">
-          <span class="card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01M7 17h.01"/></svg>
-          </span>
-          <h3>Infrastructure as Code</h3>
-          <p>Repeatable, version-controlled infrastructure with Terraform and Ansible, covering automated provisioning, configuration management, and disaster recovery.</p>
-          <ul class="tags"><li>Terraform</li><li>Ansible</li><li>Packer</li><li>Consul</li></ul>
-        </article>
-        <article class="card">
-          <span class="card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2 6 4-14 2 8h6"/></svg>
-          </span>
-          <h3>Observability &amp; SRE</h3>
-          <p>Metrics, dashboards, and alerting with Prometheus, Grafana, Graylog, the ELK stack, and Nagios, together with post-mortem analysis and reliability engineering.</p>
-          <ul class="tags"><li>Prometheus</li><li>Grafana</li><li>Graylog</li><li>ELK</li><li>Nagios</li></ul>
-        </article>
-        <article class="card">
-          <span class="card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
-          </span>
-          <h3>Security &amp; Storage</h3>
-          <p>AWS security practices, image scanning, and secrets management, plus self-hosted object storage with MinIO and Ceph and API gateways with Kong.</p>
-          <ul class="tags"><li>AWS Security</li><li>MinIO</li><li>Ceph</li><li>Kong API GW</li></ul>
-        </article>
+    <section id="expertise" class="section-alt">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__index">02</span>
+          <h2 class="section__title">Expertise</h2>
+        </div>
+        <p class="section__intro reveal">The tools and practices I reach for most.</p>
+        <div class="cards">
+          <article class="card reveal">
+            <span class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-8.97 6 6 0 0 0-11.64-1.6A4 4 0 0 0 6.5 19z"/></svg>
+            </span>
+            <h3>AWS &amp; Cloud</h3>
+            <p>High-availability architecture on AWS, Azure, DigitalOcean, and Rackspace, covering VPC design, IAM, RDS, S3, Route 53, ELB, and cost optimisation.</p>
+            <ul class="tags"><li>VPC</li><li>IAM</li><li>Route 53</li><li>RDS</li><li>Lambda</li></ul>
+          </article>
+          <article class="card reveal">
+            <span class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>
+            </span>
+            <h3>Containers &amp; Orchestration</h3>
+            <p>Containerising legacy applications and running them on Kubernetes, EKS, ECS, Docker Swarm, and DC/OS Mesos, with deployments, statefulsets, and network policies.</p>
+            <ul class="tags"><li>Kubernetes</li><li>EKS / ECS</li><li>Docker</li><li>Docker Swarm</li></ul>
+          </article>
+          <article class="card reveal">
+            <span class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 4v4h-4"/><path d="M3 20v-4h4"/></svg>
+            </span>
+            <h3>CI/CD &amp; Automation</h3>
+            <p>End-to-end pipelines with Jenkins, GitLab CI, and AWS Code services, with SonarQube quality gates, Harbor registry, and Trivy image scanning.</p>
+            <ul class="tags"><li>Jenkins</li><li>GitLab CI</li><li>SonarQube</li><li>Trivy</li></ul>
+          </article>
+          <article class="card reveal">
+            <span class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01M7 17h.01"/></svg>
+            </span>
+            <h3>Infrastructure as Code</h3>
+            <p>Repeatable, version-controlled infrastructure with Terraform and Ansible, covering automated provisioning, configuration management, and disaster recovery.</p>
+            <ul class="tags"><li>Terraform</li><li>Ansible</li><li>Packer</li><li>Consul</li></ul>
+          </article>
+          <article class="card reveal">
+            <span class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2 6 4-14 2 8h6"/></svg>
+            </span>
+            <h3>Observability &amp; SRE</h3>
+            <p>Metrics, dashboards, and alerting with Prometheus, Grafana, Graylog, the ELK stack, and Nagios, together with post-mortem analysis and reliability engineering.</p>
+            <ul class="tags"><li>Prometheus</li><li>Grafana</li><li>Graylog</li><li>ELK</li><li>Nagios</li></ul>
+          </article>
+          <article class="card reveal">
+            <span class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
+            </span>
+            <h3>Security &amp; Storage</h3>
+            <p>AWS security practices, image scanning, and secrets management, plus self-hosted object storage with MinIO and Ceph and API gateways with Kong.</p>
+            <ul class="tags"><li>AWS Security</li><li>MinIO</li><li>Ceph</li><li>Kong API GW</li></ul>
+          </article>
+        </div>
       </div>
     </section>
 
     <!-- ============ EXPERIENCE ============ -->
-    <section id="experience" class="section container" aria-labelledby="xp-title">
-      <div class="section__head">
+    <section id="experience" class="section container">
+      <div class="section__head reveal">
         <span class="section__index">03</span>
-        <h2 id="xp-title" class="section__title">Experience</h2>
+        <h2 class="section__title">Experience</h2>
       </div>
+      <p class="section__intro reveal">Fourteen years across product, platform, and consulting teams, with one throughline: keeping systems up.</p>
       <ol class="timeline">
-        <li class="timeline__item">
+        <li class="timeline__item reveal">
           <span class="timeline__dot" aria-hidden="true"></span>
           <div class="timeline__body">
             <div class="timeline__top">
@@ -198,7 +214,7 @@
             <ul class="project__stack"><li>AWS</li><li>MinIO</li><li>Ceph</li><li>Docker</li><li>Kubernetes</li><li>Jenkins</li></ul>
           </div>
         </li>
-        <li class="timeline__item">
+        <li class="timeline__item reveal">
           <span class="timeline__dot" aria-hidden="true"></span>
           <div class="timeline__body">
             <div class="timeline__top">
@@ -210,7 +226,7 @@
             <ul class="project__stack"><li>AWS</li><li>EKS</li><li>ECS</li><li>Prometheus</li><li>Grafana</li></ul>
           </div>
         </li>
-        <li class="timeline__item">
+        <li class="timeline__item reveal">
           <span class="timeline__dot" aria-hidden="true"></span>
           <div class="timeline__body">
             <div class="timeline__top">
@@ -222,7 +238,7 @@
             <ul class="project__stack"><li>VMware Tanzu</li><li>Terraform</li><li>Ocelot API GW</li><li>GitLab CI</li></ul>
           </div>
         </li>
-        <li class="timeline__item">
+        <li class="timeline__item reveal">
           <span class="timeline__dot" aria-hidden="true"></span>
           <div class="timeline__body">
             <div class="timeline__top">
@@ -234,7 +250,7 @@
             <ul class="project__stack"><li>AWS</li><li>BurpSuite</li></ul>
           </div>
         </li>
-        <li class="timeline__item">
+        <li class="timeline__item reveal">
           <span class="timeline__dot" aria-hidden="true"></span>
           <div class="timeline__body">
             <div class="timeline__top">
@@ -246,7 +262,7 @@
             <ul class="project__stack"><li>AWS</li><li>ECS</li><li>EKS</li><li>Nginx Ingress</li><li>ELK</li></ul>
           </div>
         </li>
-        <li class="timeline__item">
+        <li class="timeline__item reveal">
           <span class="timeline__dot" aria-hidden="true"></span>
           <div class="timeline__body">
             <div class="timeline__top">
@@ -258,7 +274,7 @@
             <ul class="project__stack"><li>AWS</li><li>Azure</li><li>Kubernetes</li><li>Ansible</li><li>Kong API GW</li><li>Python</li></ul>
           </div>
         </li>
-        <li class="timeline__item">
+        <li class="timeline__item reveal">
           <span class="timeline__dot" aria-hidden="true"></span>
           <div class="timeline__body">
             <div class="timeline__top">
@@ -270,7 +286,7 @@
             <ul class="project__stack"><li>VMware</li><li>KVM</li><li>Jenkins</li><li>Linux/Windows</li></ul>
           </div>
         </li>
-        <li class="timeline__item">
+        <li class="timeline__item reveal">
           <span class="timeline__dot" aria-hidden="true"></span>
           <div class="timeline__body">
             <div class="timeline__top">
@@ -286,41 +302,44 @@
     </section>
 
     <!-- ============ PROJECTS ============ -->
-    <section id="projects" class="section container" aria-labelledby="proj-title">
-      <div class="section__head">
-        <span class="section__index">04</span>
-        <h2 id="proj-title" class="section__title">Selected projects</h2>
-      </div>
-      <div class="projects">
-        <article class="project">
-          <div class="project__meta">
-            <span class="project__kind">Cloud migration &amp; containerisation</span>
-            <span class="project__year">2018 to 2020</span>
-          </div>
-          <h3>Lifafa Gift Cards Platform</h3>
-          <p>Led the initial setup and containerisation of the Lifafa website (PHP/Laravel), migrated on-premise applications to AWS, and containerised them with full CI/CD via Jenkins and GitHub, plus Nagios-based Docker monitoring and alerting.</p>
-          <ul class="project__stack"><li>AWS</li><li>Docker</li><li>Jenkins</li><li>Nagios</li><li>Laravel</li></ul>
-        </article>
-        <article class="project">
-          <div class="project__meta">
-            <span class="project__kind">Enterprise platform</span>
-            <span class="project__year">2022 to Present</span>
-          </div>
-          <h3>Toyota TSAM (South Africa)</h3>
-          <p>Configured VMware Tanzu on vSphere and deployed API and backend services onto the Tanzu platform, providing a modern, Kubernetes-based runtime on enterprise infrastructure.</p>
-          <ul class="project__stack"><li>VMware Tanzu</li><li>vSphere</li><li>Kubernetes</li><li>APIs</li></ul>
-        </article>
+    <section id="projects" class="section-alt">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__index">04</span>
+          <h2 class="section__title">Selected projects</h2>
+        </div>
+        <p class="section__intro reveal">A couple of builds worth calling out.</p>
+        <div class="projects">
+          <article class="project reveal">
+            <div class="project__meta">
+              <span class="project__kind">Cloud migration &amp; containerisation</span>
+              <span class="project__year">2018 to 2020</span>
+            </div>
+            <h3>Lifafa Gift Cards Platform</h3>
+            <p>Led the initial setup and containerisation of the Lifafa website (PHP/Laravel), migrated on-premise applications to AWS, and containerised them with full CI/CD via Jenkins and GitHub, plus Nagios-based Docker monitoring and alerting.</p>
+            <ul class="project__stack"><li>AWS</li><li>Docker</li><li>Jenkins</li><li>Nagios</li><li>Laravel</li></ul>
+          </article>
+          <article class="project reveal">
+            <div class="project__meta">
+              <span class="project__kind">Enterprise platform</span>
+              <span class="project__year">2022 to Present</span>
+            </div>
+            <h3>Toyota TSAM (South Africa)</h3>
+            <p>Configured VMware Tanzu on vSphere and deployed API and backend services onto the Tanzu platform, providing a modern, Kubernetes-based runtime on enterprise infrastructure.</p>
+            <ul class="project__stack"><li>VMware Tanzu</li><li>vSphere</li><li>Kubernetes</li><li>APIs</li></ul>
+          </article>
+        </div>
       </div>
     </section>
 
     <!-- ============ CERTIFICATIONS & EDUCATION ============ -->
-    <section id="certs" class="section container" aria-labelledby="cert-title">
-      <div class="section__head">
+    <section id="certs" class="section container">
+      <div class="section__head reveal">
         <span class="section__index">05</span>
-        <h2 id="cert-title" class="section__title">Certifications &amp; education</h2>
+        <h2 class="section__title">Certifications &amp; education</h2>
       </div>
       <div class="two-col">
-        <div>
+        <div class="reveal">
           <h3 class="sub-title">Certifications</h3>
           <ul class="certs">
             <li><span class="certs__badge" aria-hidden="true">AWS</span><div><strong>AWS Solutions Architect, Professional</strong><span>Amazon Web Services</span></div></li>
@@ -329,7 +348,7 @@
             <li><span class="certs__badge" aria-hidden="true">MS</span><div><strong>Microsoft Certified Solutions Associate</strong><span>Microsoft (MCSA)</span></div></li>
           </ul>
         </div>
-        <div>
+        <div class="reveal">
           <h3 class="sub-title">Education</h3>
           <ul class="certs">
             <li><span class="certs__badge" aria-hidden="true">BCA</span><div><strong>Bachelor of Computer Applications</strong><span>Mangalore Institute of Management &amp; Engineering</span></div></li>
@@ -346,11 +365,11 @@
     </section>
 
     <!-- ============ CONTACT ============ -->
-    <section id="contact" class="section container" aria-labelledby="contact-title">
-      <div class="contact">
+    <section id="contact" class="section container">
+      <div class="contact reveal">
         <div class="section__head">
           <span class="section__index">06</span>
-          <h2 id="contact-title" class="section__title">Get in touch</h2>
+          <h2 class="section__title">Get in touch</h2>
         </div>
         <p class="contact__lead">
           Have a platform to scale, a migration to de-risk, or reliability to improve?
