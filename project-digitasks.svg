@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" role="img" aria-label="DigiTasks architecture: users work in the app, which calls API services backed by a database, delivered through CI/CD" font-family="Inter, Arial, sans-serif">
+  <rect width="800" height="460" fill="#f4f8f7"/>
+  <defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0f766e"/></marker></defs>
+  <text x="40" y="58" fill="#0b5c55" font-size="15" font-weight="700" letter-spacing="1">DIGITASKS · TASK &amp; COLLABORATION</text>
+  <g>
+    <rect x="40" y="170" width="150" height="120" rx="14" fill="#ffffff" stroke="#cfd6d3"/><text x="115" y="236" text-anchor="middle" fill="#16211e" font-size="16" font-weight="700">Users</text>
+    <rect x="230" y="170" width="150" height="120" rx="14" fill="#e2f2ef" stroke="#0f766e"/><text x="305" y="226" text-anchor="middle" fill="#0b5c55" font-size="16" font-weight="700">DigiTasks app</text><text x="305" y="248" text-anchor="middle" fill="#45655e" font-size="13">tasks &amp; teams</text>
+    <rect x="420" y="170" width="150" height="120" rx="14" fill="#ffffff" stroke="#cfd6d3"/><text x="495" y="236" text-anchor="middle" fill="#16211e" font-size="16" font-weight="700">API services</text>
+    <rect x="610" y="170" width="150" height="120" rx="14" fill="#ffffff" stroke="#cfd6d3"/><text x="685" y="236" text-anchor="middle" fill="#16211e" font-size="16" font-weight="700">Database</text>
+    <line x1="196" y1="230" x2="226" y2="230" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a3)"/>
+    <line x1="386" y1="230" x2="416" y2="230" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a3)"/>
+    <line x1="576" y1="230" x2="606" y2="230" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a3)"/>
+  </g>
+  <text x="40" y="360" fill="#6f7a75" font-size="14">Taken from concept to production and delivered through CI/CD.</text>
+</svg>
