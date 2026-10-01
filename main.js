@@ -25,17 +25,44 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMenu(); });
   }
 
-  /* ---------- Reveal on scroll ---------- */
+  /* ---------- Reveal on scroll (with gentle per-section stagger) ---------- */
   var revealEls = document.querySelectorAll(".reveal");
   if (reduce || !("IntersectionObserver" in window)) {
     revealEls.forEach(function (el) { el.classList.add("is-visible"); });
   } else {
+    // Stagger: delay each revealing element by its order within its section
+    document.querySelectorAll("section").forEach(function (sec) {
+      var items = sec.querySelectorAll(".reveal");
+      items.forEach(function (el, i) { el.style.transitionDelay = (Math.min(i, 6) * 0.07) + "s"; });
+    });
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) { entry.target.classList.add("is-visible"); io.unobserve(entry.target); }
       });
-    }, { threshold: 0.14, rootMargin: "0px 0px -6% 0px" });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
     revealEls.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------- Parallax on marked elements ---------- */
+  var parEls = document.querySelectorAll("[data-parallax]");
+  if (!reduce && parEls.length) {
+    var ticking = false;
+    var applyParallax = function () {
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      parEls.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        var speed = parseFloat(el.getAttribute("data-parallax")) || 0.08;
+        var offset = (r.top + r.height / 2) - vh / 2;
+        el.style.transform = "translateY(" + (offset * -speed).toFixed(1) + "px)";
+      });
+      ticking = false;
+    };
+    var requestParallax = function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(applyParallax); }
+    };
+    window.addEventListener("scroll", requestParallax, { passive: true });
+    window.addEventListener("resize", requestParallax, { passive: true });
+    applyParallax();
   }
 
   /* ---------- Skill bars fill when in view ---------- */
