@@ -33,7 +33,7 @@
     // Stagger: delay each revealing element by its order within its section
     document.querySelectorAll("section").forEach(function (sec) {
       var items = sec.querySelectorAll(".reveal");
-      items.forEach(function (el, i) { el.style.transitionDelay = (Math.min(i, 6) * 0.07) + "s"; });
+      items.forEach(function (el, i) { el.style.transitionDelay = (Math.min(i, 8) * 0.11) + "s"; });
     });
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {

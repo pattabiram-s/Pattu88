@@ -205,12 +205,15 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .legal-page .nav { position: sticky; background: rgba(247,244,239,0.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
 .legal-page .brand { color: var(--ink); }
 
-/* ---------- Reveal (cinematic) ---------- */
-.reveal { opacity: 0; transform: translateY(40px); transition: opacity .85s var(--ease), transform .85s var(--ease); }
+/* ---------- Reveal (cinematic, pronounced) ---------- */
+.reveal { opacity: 0; transform: translateY(70px) scale(.97); transition: opacity 1s var(--ease), transform 1s var(--ease); }
 .reveal.is-visible { opacity: 1; transform: none; }
+/* Section titles sweep up a touch further for drama */
+.section__title.reveal, .lead-statement.reveal, .contact__title.reveal, .hero__title { }
+.panel__quote.reveal { transform: translateY(90px) scale(.96); }
 /* Images inside a revealing block scale-reveal as the block enters */
 .intro__portrait, .project__shot { overflow: hidden; }
-.reveal img { transform: scale(1.14); transition: transform 1.2s var(--ease); }
+.reveal img { transform: scale(1.25); transition: transform 1.4s var(--ease); }
 .reveal.is-visible img { transform: none; }
 /* Parallax targets are moved by JS; keep a smooth transform */
 [data-parallax] { will-change: transform; }
