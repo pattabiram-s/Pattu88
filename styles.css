@@ -85,7 +85,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 /* Cinematic background push-in: scaled image layer under the scrim */
 .hero::before { content: ""; position: absolute; inset: 0; background-image: var(--hero-img); background-size: cover; background-position: center; transform-origin: center; }
 @media (prefers-reduced-motion: no-preference) {
-  .hero::before { transform: scale(1.14); animation: heroPush 2.6s var(--ease) forwards; }
+  .hero::before { transform: scale(1.16); animation: heroPush 3.6s var(--ease) forwards; }
 }
 @keyframes heroPush { to { transform: scale(1); } }
 .hero__scrim { position: absolute; inset: 0; background:
