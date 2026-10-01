@@ -105,6 +105,16 @@
     sections.forEach(function (s) { spy.observe(s); });
   }
 
+  /* ---------- Nav solid-on-scroll ---------- */
+  var navEl = document.getElementById("nav");
+  if (navEl) {
+    var onScroll = function () {
+      navEl.classList.toggle("is-scrolled", (window.scrollY || 0) > 60);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
   /* ---------- Footer year ---------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
