@@ -81,7 +81,13 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .mobile-menu[hidden] { display: none; }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; min-height: 94vh; display: flex; align-items: flex-end; padding-bottom: clamp(3rem, 8vw, 6rem); background-image: var(--hero-img); background-size: cover; background-position: center; }
+.hero { position: relative; min-height: 94vh; display: flex; align-items: flex-end; padding-bottom: clamp(3rem, 8vw, 6rem); background-image: var(--hero-img); background-size: cover; background-position: center; overflow: hidden; }
+/* Cinematic background push-in: scaled image layer under the scrim */
+.hero::before { content: ""; position: absolute; inset: 0; background-image: var(--hero-img); background-size: cover; background-position: center; transform-origin: center; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero::before { transform: scale(1.14); animation: heroPush 2.6s var(--ease) forwards; }
+}
+@keyframes heroPush { to { transform: scale(1); } }
 .hero__scrim { position: absolute; inset: 0; background:
   linear-gradient(90deg, rgba(10,12,11,0.82) 0%, rgba(10,12,11,0.5) 45%, rgba(10,12,11,0.15) 100%),
   linear-gradient(0deg, rgba(10,12,11,0.55) 0%, rgba(10,12,11,0) 55%); }
