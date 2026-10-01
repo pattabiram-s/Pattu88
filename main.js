@@ -14,24 +14,6 @@
     (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); })();
   }
 
-  /* ---------- Scroll-scrubbed zoom-in on sections (GSAP ScrollTrigger) ---------- */
-  var gsapOn = !reduce && window.gsap && window.ScrollTrigger;
-  if (gsapOn) {
-    window.gsap.registerPlugin(window.ScrollTrigger);
-    if (lenis) lenis.on("scroll", window.ScrollTrigger.update);
-    document.documentElement.classList.add("gsap-on");
-    document.querySelectorAll(".section > .container, .panel .container").forEach(function (el) {
-      window.gsap.fromTo(el,
-        { scale: 0.72, opacity: 0.1 },
-        {
-          scale: 1, opacity: 1, ease: "none", transformOrigin: "center center",
-          scrollTrigger: { trigger: el, start: "top 92%", end: "top 45%", scrub: 0.6 }
-        }
-      );
-    });
-    window.addEventListener("load", function () { window.ScrollTrigger.refresh(); });
-  }
-
   /* ---------- Mobile menu ---------- */
   var menuToggle = document.getElementById("menuToggle");
   var mobileMenu = document.getElementById("mobileMenu");

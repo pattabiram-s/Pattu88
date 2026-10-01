@@ -244,12 +244,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .reveal.is-visible img { transform: none; }
 [data-parallax] { will-change: transform; }
 
-/* When GSAP scroll-zoom runs, the section-level zoom is the entrance:
-   neutralise the per-element reveal so motion doesn't compound. */
-.gsap-on .reveal { opacity: 1; transform: none; transition: none; }
-.gsap-on .reveal img { transform: none; }
-.gsap-on .section > .container, .gsap-on .panel .container { will-change: transform; }
-
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
