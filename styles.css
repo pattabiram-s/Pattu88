@@ -26,12 +26,6 @@
   --radius: 14px;
   --maxw: 1140px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* Glassmorphism tokens */
-  --glass-bg: rgba(255, 255, 255, 0.45);
-  --glass-border: rgba(255, 255, 255, 0.65);
-  --glass-blur: saturate(160%) blur(14px);
-  --glass-shadow: 0 16px 40px -22px rgba(40, 30, 16, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -215,20 +209,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .certs li div { display: flex; flex-direction: column; }
 .certs li strong { font-size: .95rem; color: var(--ink); font-family: var(--font-body); }
 .certs li span { font-size: .84rem; color: var(--text-mute); }
-
-/* ---------- Glassmorphism on card surfaces ---------- */
-.value, .timeline__body, .project, .certs li {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border-color: var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-/* Project image header turns translucent too, so the card reads as one pane of glass */
-.project__shot { background: rgba(255, 255, 255, 0.25); }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .value, .timeline__body, .project, .certs li { background: var(--surface); }
-}
 
 /* ---------- Contact CTA (full-bleed) ---------- */
 .contact-cta { position: relative; background-image: var(--panel-img); background-size: cover; background-position: center; text-align: center; }
