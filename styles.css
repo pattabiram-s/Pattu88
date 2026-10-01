@@ -110,6 +110,16 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .stats strong { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--ink); }
 .stats span { font-size: .84rem; color: var(--text-mute); }
 
+/* ---------- Values / How I work ---------- */
+.values { display: grid; grid-template-columns: 1fr; gap: 1.1rem; }
+.value { padding: 1.4rem 1.5rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); transition: transform .2s var(--ease), box-shadow .2s var(--ease); }
+.value:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.value h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: .4rem; }
+.value p { color: var(--text-soft); font-size: .95rem; margin: 0; }
+.principles { display: grid; gap: .8rem; max-width: 60rem; }
+.principles li { padding: 1rem 1.2rem; border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; background: var(--surface); border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); color: var(--text-soft); }
+.principles strong { color: var(--ink); font-family: var(--font-body); }
+
 /* ---------- Skills ---------- */
 .skills { display: grid; grid-template-columns: 1fr; gap: 1.3rem 2.5rem; margin-bottom: 2.2rem; }
 .skill__top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .45rem; }
@@ -207,6 +217,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 @media (min-width: 620px) {
   .skills { grid-template-columns: 1fr 1fr; }
   .projects { grid-template-columns: 1fr 1fr; }
+  .values { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 960px) {
+  .values { grid-template-columns: repeat(3, 1fr); }
 }
 @media (min-width: 900px) {
   .nav__links { display: flex; }
