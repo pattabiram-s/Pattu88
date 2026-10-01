@@ -30,6 +30,13 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 76px; -webkit-text-size-adjust: 100%; }
+
+/* ---------- Lenis smooth scroll ---------- */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
 body { margin: 0; font-family: var(--font-body); color: var(--text); background: var(--bg); line-height: 1.7; -webkit-font-smoothing: antialiased; }
 h1, h2, h3 { font-family: var(--font-display); line-height: 1.08; margin: 0; color: var(--ink); font-weight: 600; }
 p { margin: 0 0 1rem; }
@@ -87,6 +94,21 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .hero__scroll { position: absolute; z-index: 1; right: clamp(1.1rem, 4vw, 2.5rem); bottom: clamp(1.5rem, 4vw, 2.5rem); display: inline-flex; flex-direction: column; align-items: center; gap: .3rem; color: #fff; font-size: .72rem; text-transform: uppercase; letter-spacing: .15em; }
 .hero__scroll svg { animation: bob 1.8s ease-in-out infinite; }
 @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+.hero__inner { will-change: transform, opacity; }
+
+/* Staggered hero entrance on load (lines rise in, Hadfield-style) */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__eyebrow, .hero__title, .hero__lead, .hero__cta, .hero__scroll {
+    opacity: 0; transform: translateY(32px);
+    animation: heroRise 1s var(--ease) forwards;
+  }
+  .hero__eyebrow { animation-delay: .15s; }
+  .hero__title   { animation-delay: .32s; }
+  .hero__lead    { animation-delay: .54s; }
+  .hero__cta     { animation-delay: .72s; }
+  .hero__scroll  { animation-delay: 1.05s; }
+}
+@keyframes heroRise { to { opacity: 1; transform: none; } }
 
 /* ---------- Full-bleed panels ---------- */
 .panel { position: relative; min-height: 58vh; display: flex; align-items: center; background-image: var(--panel-img); background-size: cover; background-position: center; }

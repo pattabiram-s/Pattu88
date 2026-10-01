@@ -7,6 +7,13 @@
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ---------- Smooth inertia scroll (Lenis) ---------- */
+  var lenis = null;
+  if (!reduce && window.Lenis) {
+    lenis = new window.Lenis({ lerp: 0.1, smoothWheel: true });
+    (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); })();
+  }
+
   /* ---------- Mobile menu ---------- */
   var menuToggle = document.getElementById("menuToggle");
   var mobileMenu = document.getElementById("mobileMenu");
@@ -140,6 +147,40 @@
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
+  }
+
+  /* ---------- Anchor links routed through Lenis ---------- */
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var id = a.getAttribute("href");
+      if (!id || id.length < 2) return;
+      var target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      if (lenis) lenis.scrollTo(target, { offset: -80 });
+      else target.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+      closeMenu();
+    });
+  });
+
+  /* ---------- Hero content drift + fade on scroll ---------- */
+  var heroInner = document.querySelector(".hero__inner");
+  var heroCue = document.querySelector(".hero__scroll");
+  if (!reduce && heroInner) {
+    var hTicking = false;
+    var heroDrift = function () {
+      var vh = window.innerHeight || 800;
+      var y = window.scrollY || window.pageYOffset || 0;
+      if (y <= vh) {
+        heroInner.style.transform = "translateY(" + (y * 0.35).toFixed(1) + "px)";
+        heroInner.style.opacity = String(Math.max(0, 1 - y / (vh * 0.7)));
+        if (heroCue) heroCue.style.opacity = String(Math.max(0, 1 - y / 160));
+      }
+      hTicking = false;
+    };
+    var reqHero = function () { if (!hTicking) { hTicking = true; requestAnimationFrame(heroDrift); } };
+    window.addEventListener("scroll", reqHero, { passive: true });
+    reqHero();
   }
 
   /* ---------- Footer year ---------- */
