@@ -339,3 +339,27 @@ a.tip:hover .tip__more { color: var(--accent-strong); }
 .steps > li h3 { margin: .25rem 0 .4rem; font-size: 1.06rem; }
 .steps > li > p { margin: 0 0 .7rem; color: var(--text-soft); line-height: 1.6; }
 .steps .tip-code { margin-top: .3rem; }
+
+/* ---------- Beautiful image shimmer (load-in) ---------- */
+.img-shimmer { position: relative; overflow: hidden; }
+.intro__portrait.img-shimmer { border-radius: var(--radius); }
+.img-shimmer::before,
+.img-shimmer::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; transition: opacity .5s var(--ease); }
+/* soft skeleton base */
+.img-shimmer::before { z-index: 1; background: linear-gradient(135deg, var(--paper2) 0%, var(--surface) 50%, var(--paper2) 100%); }
+/* travelling sheen, tinted with the brand accent */
+.img-shimmer::after { z-index: 2; background: linear-gradient(115deg,
+    rgba(255,255,255,0) 20%, rgba(255,255,255,0.85) 44%,
+    rgba(15,118,110,0.12) 50%, rgba(255,255,255,0.85) 56%, rgba(255,255,255,0) 80%);
+  background-size: 220% 100%; animation: shimmerSweep 1.6s ease-in-out infinite; }
+.img-shimmer.is-loaded::before,
+.img-shimmer.is-loaded::after { opacity: 0; }
+.img-shimmer img { position: relative; z-index: 3; opacity: 0; transform: scale(1.03);
+  transition: opacity .7s var(--ease), transform .9s var(--ease); }
+.img-shimmer.is-loaded img { opacity: 1; transform: none; }
+@keyframes shimmerSweep { 0% { background-position: 140% 0; } 100% { background-position: -40% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .img-shimmer::after { animation: none; }
+  .img-shimmer img { transition: none; opacity: 1; transform: none; }
+  .img-shimmer::before, .img-shimmer::after { opacity: 0; }
+}

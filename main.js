@@ -183,6 +183,14 @@
     reqHero();
   }
 
+  /* ---------- Image shimmer: reveal images already cached ---------- */
+  document.querySelectorAll(".img-shimmer img").forEach(function (img) {
+    if (img.complete && img.naturalWidth > 0) {
+      var w = img.closest(".img-shimmer");
+      if (w) w.classList.add("is-loaded");
+    }
+  });
+
   /* ---------- Footer year ---------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
