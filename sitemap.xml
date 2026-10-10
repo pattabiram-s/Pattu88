@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://pattabirams.github.io/</loc><lastmod>2026-10-10</lastmod><priority>1.0</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-aiops.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-design-for-failure.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-gitops.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-instrument-first.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-kubernetes-pods.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-least-privilege.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-llmops.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-pipelines-fail-fast.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-prompt-injection.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-right-size.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-runtime-threats.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-secrets-management.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-shift-left.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-supply-chain.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-terraform-state.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://pattabirams.github.io/tip-zero-trust.html</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
+</urlset>
