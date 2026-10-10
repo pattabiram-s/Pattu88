@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deliver with GitOps, not kubectl apply · Pattabi Ram S</title>
+  <meta name="description" content="Goal: cluster state equals git, deploys are pull requests, and manual drift is reverted automatically." />
+  <meta name="color-scheme" content="light" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" /><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="legal-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="Home">Pattabi Ram S</a>
+      <nav class="nav__actions" aria-label="Primary">
+        <a class="btn btn--sm btn--ghost" href="index.html#tips">All tips</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container legal tip-page">
+    <span class="tip__tag">GitOps</span>
+    <h1>Deliver with GitOps, not kubectl apply</h1>
+    <p class="tip-page__lead">Goal: cluster state equals git, deploys are pull requests, and manual drift is reverted automatically.</p>
+
+    <ol class="steps">
+      <li>
+        <h3>Install a GitOps controller</h3>
+        <p>Argo CD (or Flux) watches a repo and reconciles the cluster to it.</p>
+        <pre class="tip-code"><code>kubectl create namespace argocd
+kubectl apply -n argocd -f \
+  https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml</code></pre>
+      </li>
+      <li>
+        <h3>Describe the app as code</h3>
+        <p>Point an Application at the repo path; turn on auto-sync, prune and self-heal.</p>
+        <pre class="tip-code"><code>apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: { name: web, namespace: argocd }
+spec:
+  source: { repoURL: git@github.com:acme/infra.git, path: envs/prod/web, targetRevision: main }
+  destination: { server: https://kubernetes.default.svc, namespace: web }
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }</code></pre>
+      </li>
+      <li>
+        <h3>Deploy by merging, never by hand</h3>
+        <p>A change is a PR to the manifests; the controller rolls it out. No one runs <code>kubectl apply</code> against prod.</p>
+      </li>
+      <li>
+        <h3>Let self-heal revert drift</h3>
+        <p>Someone hotfixes a live Deployment? selfHeal snaps it back to git — config stays reproducible.</p>
+      </li>
+      <li>
+        <h3>Roll back with git</h3>
+        <p>Reverting the commit reverts the cluster.</p>
+        <pre class="tip-code"><code>git revert &lt;bad-sha&gt; &amp;&amp; git push    # Argo syncs the rollback</code></pre>
+      </li>
+    </ol>
+
+    <a class="back" href="index.html#tips">&larr; Back to all tips</a>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> Pattabi Ram S · Cloud &amp; DevOps Architect</p>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="index.html">Home</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="main.js" defer></script>
+</body>
+</html>

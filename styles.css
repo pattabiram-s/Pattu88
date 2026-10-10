@@ -331,3 +331,11 @@ a.tip:hover .tip__more { color: var(--accent-strong); }
 .article__item-lead { font-size: 1.08rem; color: var(--text-soft); line-height: 1.6; margin: .4rem 0 1rem; }
 .article h3 { font-size: 1.08rem; margin-top: 1.7rem; margin-bottom: .2rem; }
 .article p { line-height: 1.7; }
+
+/* ---------- Step-by-step list on tip subpages ---------- */
+.steps { counter-reset: step; list-style: none; padding: 0; margin: 1.6rem 0 1rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.steps > li { counter-increment: step; position: relative; padding-left: 3rem; }
+.steps > li::before { content: counter(step); position: absolute; left: 0; top: -2px; width: 2rem; height: 2rem; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: .9rem; font-family: var(--font-body); }
+.steps > li h3 { margin: .25rem 0 .4rem; font-size: 1.06rem; }
+.steps > li > p { margin: 0 0 .7rem; color: var(--text-soft); line-height: 1.6; }
+.steps .tip-code { margin-top: .3rem; }

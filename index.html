@@ -311,59 +311,101 @@
         </div>
         <p class="section__lead reveal">Field notes from building and securing production systems. Short, practical lessons I keep coming back to.</p>
         <div class="tips">
-          <a class="tip reveal" href="devops-secops-tips.html#tip-pipelines-fail-fast">
+          <a class="tip reveal" href="tip-pipelines-fail-fast.html">
             <span class="tip__tag">CI/CD</span>
             <h3>Make pipelines fail fast, loudly</h3>
-            <p>Put the cheapest, most likely-to-fail checks first: lint, unit tests, then build. A ten-second failure beats a ten-minute one, and developers trust a pipeline that tells them what broke within seconds.</p>
-                      <span class="tip__more">Read more &rarr;</span>
+            <p>Order jobs by cost and failure rate, cap runtimes, and make the red build name what broke.</p>
+            <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="devops-secops-tips.html#tip-least-privilege">
+          <a class="tip reveal" href="tip-least-privilege.html">
             <span class="tip__tag">Security</span>
-            <h3>Least privilege is a default, not a cleanup task</h3>
-            <p>Start every IAM role, security group, and service account with zero access and add only what the workload proves it needs. Retrofitting least privilege onto a running system is far harder than building it in from commit one.</p>
-                      <span class="tip__more">Read more &rarr;</span>
+            <h3>Scope an IAM role to exactly what it uses</h3>
+            <p>Grant nothing by default; scope roles from what the workload actually uses, not guesses.</p>
+            <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="devops-secops-tips.html#tip-terraform-state">
+          <a class="tip reveal" href="tip-terraform-state.html">
             <span class="tip__tag">IaC</span>
-            <h3>Treat state like production data</h3>
-            <p>Remote, locked, versioned Terraform state with encryption at rest saves you from the day two engineers apply at once. Back it up, and never edit it by hand unless you have a tested recovery plan.</p>
-                      <span class="tip__more">Read more &rarr;</span>
+            <h3>Make Terraform state locked and recoverable</h3>
+            <p>Remote, locked, versioned, encrypted state — and never hand-edited without a backup.</p>
+            <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="devops-secops-tips.html#tip-design-for-failure">
+          <a class="tip reveal" href="tip-design-for-failure.html">
             <span class="tip__tag">Reliability</span>
-            <h3>Design for the failure you will actually have</h3>
-            <p>Most outages are not exotic: a full disk, an expired certificate, a bad deploy, a throttled dependency. Alert on those first, rehearse the rollback, and automate the boring recovery before chasing rare edge cases.</p>
-                      <span class="tip__more">Read more &rarr;</span>
+            <h3>Cover the outages you&#x27;ll actually have</h3>
+            <p>Alert the boring killers — full disks, expiring certs, bad deploys — and rehearse the rollback.</p>
+            <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="devops-secops-tips.html#tip-secrets-management">
+          <a class="tip reveal" href="tip-secrets-management.html">
             <span class="tip__tag">Secrets</span>
-            <h3>Keep secrets out of images and repos</h3>
-            <p>Inject credentials at runtime from a secrets manager, scope them tightly, and rotate them on a schedule. A leaked key in a container layer or git history is a breach waiting to be indexed.</p>
-                      <span class="tip__more">Read more &rarr;</span>
+            <h3>Get secrets out of images and repos</h3>
+            <p>Keep secrets out of images and git; inject at runtime, scan before merge, rotate on schedule.</p>
+            <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="devops-secops-tips.html#tip-instrument-first">
+          <a class="tip reveal" href="tip-instrument-first.html">
             <span class="tip__tag">Observability</span>
-            <h3>Instrument before you optimise</h3>
-            <p>You cannot tune what you cannot see. Ship structured logs, the four golden signals, and a trace ID that follows a request end to end, then let the data, not a hunch, point at the bottleneck.</p>
-                      <span class="tip__more">Read more &rarr;</span>
+            <h3>Instrument to pivot metric → trace → log</h3>
+            <p>Structured logs, RED/USE metrics and a trace id — so you pivot from alert to root cause fast.</p>
+            <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="devops-secops-tips.html#tip-right-size">
+          <a class="tip reveal" href="tip-right-size.html">
             <span class="tip__tag">Cost</span>
-            <h3>Right-size on real usage, not guesses</h3>
-            <p>Autoscaling, scheduled shutdown of non-prod, and a monthly look at idle resources recover more spend than any one big migration. Tag everything so the bill tells you who owns what.</p>
-                      <span class="tip__more">Read more &rarr;</span>
+            <h3>Pay for what you actually use</h3>
+            <p>Size from real usage, switch off idle non-prod, and tag every resource to an owner.</p>
+            <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="devops-secops-tips.html#tip-kubernetes-pods">
+          <a class="tip reveal" href="tip-kubernetes-pods.html">
             <span class="tip__tag">Kubernetes</span>
-            <h3>Set requests, limits, and probes on every pod</h3>
-            <p>Missing resource requests wreck the scheduler, missing limits let one pod starve a node, and missing readiness probes send traffic to containers that are not ready. All three are a one-time cost that pays off every incident.</p>
-                      <span class="tip__more">Read more &rarr;</span>
+            <h3>Give every pod requests, limits, and probes</h3>
+            <p>Requests, limits and probes on every pod — four fields that prevent a class of incidents.</p>
+            <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="devops-secops-tips.html#tip-shift-left">
+          <a class="tip reveal" href="tip-shift-left.html">
             <span class="tip__tag">DevSecOps</span>
-            <h3>Shift security left, but gate at the right</h3>
-            <p>Scan dependencies and IaC in the pull request so issues are cheap to fix, and still enforce an admission and runtime control in production. Early feedback and a hard gate are complements, not a choice.</p>
-                      <span class="tip__more">Read more &rarr;</span>
+            <h3>Catch issues in the PR, enforce at the gate</h3>
+            <p>Scan in the PR where fixes are cheap, and still enforce a hard policy at admission and runtime.</p>
+            <span class="tip__more">Read more &rarr;</span>
+          </a>
+          <a class="tip reveal" href="tip-gitops.html">
+            <span class="tip__tag">GitOps</span>
+            <h3>Deliver with GitOps, not kubectl apply</h3>
+            <p>Make git the single source of truth; deploy by merge and let the cluster self-heal drift.</p>
+            <span class="tip__more">Read more &rarr;</span>
+          </a>
+          <a class="tip reveal" href="tip-supply-chain.html">
+            <span class="tip__tag">Supply Chain</span>
+            <h3>Prove your build&#x27;s provenance (SBOM + SLSA)</h3>
+            <p>Ship images with an SBOM, a signature and verifiable build provenance.</p>
+            <span class="tip__more">Read more &rarr;</span>
+          </a>
+          <a class="tip reveal" href="tip-runtime-threats.html">
+            <span class="tip__tag">Threat Detection</span>
+            <h3>Detect runtime threats with eBPF</h3>
+            <p>Catch shells-in-containers and odd syscalls at runtime with eBPF/Falco.</p>
+            <span class="tip__more">Read more &rarr;</span>
+          </a>
+          <a class="tip reveal" href="tip-zero-trust.html">
+            <span class="tip__tag">Zero Trust</span>
+            <h3>Make service-to-service traffic zero-trust</h3>
+            <p>Authenticate and encrypt every service call by workload identity, not network location.</p>
+            <span class="tip__more">Read more &rarr;</span>
+          </a>
+          <a class="tip reveal" href="tip-prompt-injection.html">
+            <span class="tip__tag">LLM Security</span>
+            <h3>Defend an LLM app against prompt injection</h3>
+            <p>Stop untrusted text from hijacking your LLM&#x27;s tools or leaking data.</p>
+            <span class="tip__more">Read more &rarr;</span>
+          </a>
+          <a class="tip reveal" href="tip-llmops.html">
+            <span class="tip__tag">LLMOps</span>
+            <h3>Ship LLM features behind evals and guardrails</h3>
+            <p>Ship prompt and model changes behind evals, guardrails and cost budgets.</p>
+            <span class="tip__more">Read more &rarr;</span>
+          </a>
+          <a class="tip reveal" href="tip-aiops.html">
+            <span class="tip__tag">AIOps</span>
+            <h3>Cut alert noise with AIOps</h3>
+            <p>Turn a flood of alerts into a few correlated, actionable incidents.</p>
+            <span class="tip__more">Read more &rarr;</span>
           </a>
         </div>
       </div>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catch issues in the PR, enforce at the gate · Pattabi Ram S</title>
+  <meta name="description" content="Goal: cheap security feedback while coding, plus a hard policy production can’t bypass." />
+  <meta name="color-scheme" content="light" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" /><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="legal-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="Home">Pattabi Ram S</a>
+      <nav class="nav__actions" aria-label="Primary">
+        <a class="btn btn--sm btn--ghost" href="index.html#tips">All tips</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container legal tip-page">
+    <span class="tip__tag">DevSecOps</span>
+    <h1>Catch issues in the PR, enforce at the gate</h1>
+    <p class="tip-page__lead">Goal: cheap security feedback while coding, plus a hard policy production can’t bypass.</p>
+
+    <ol class="steps">
+      <li>
+        <h3>Scan the PR</h3>
+        <p>Images, IaC and secrets — where a fix is a quick edit.</p>
+        <pre class="tip-code"><code>trivy fs --scanners vuln,secret,misconfig .
+tfsec .            # or: checkov -d .
+gitleaks detect --source . --redact</code></pre>
+      </li>
+      <li>
+        <h3>Fail the PR on high severity</h3>
+        <p>Make the scan a required check.</p>
+        <pre class="tip-code"><code>trivy fs --severity HIGH,CRITICAL --exit-code 1 .</code></pre>
+      </li>
+      <li>
+        <h3>Sign images on build</h3>
+        <p>Provenance you can verify later.</p>
+        <pre class="tip-code"><code>cosign sign --key cosign.key registry/acme/web:1.8.2</code></pre>
+      </li>
+      <li>
+        <h3>Enforce policy at admission</h3>
+        <p>Block risky things at the cluster door.</p>
+        <pre class="tip-code"><code>apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: no-latest
+      match: { any: [{ resources: { kinds: [Pod] } }] }
+      validate:
+        message: &quot;Pin an image tag; :latest is not allowed&quot;
+        pattern: { spec: { containers: [{ image: &quot;!*:latest&quot; }] } }</code></pre>
+      </li>
+      <li>
+        <h3>Verify provenance at runtime</h3>
+        <p>Only run what you signed.</p>
+        <pre class="tip-code"><code>cosign verify --key cosign.pub registry/acme/web:1.8.2</code></pre>
+      </li>
+    </ol>
+
+    <a class="back" href="index.html#tips">&larr; Back to all tips</a>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> Pattabi Ram S · Cloud &amp; DevOps Architect</p>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="index.html">Home</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="main.js" defer></script>
+</body>
+</html>
