@@ -13,9 +13,8 @@
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preload" as="image" href="hero-main.webp" fetchpriority="high" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" href="fonts/Fraunces-600-latin.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="fonts/Inter-400-latin.woff2" crossorigin />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -77,6 +76,7 @@
           <h2 class="lead-statement reveal">I turn fragile, manual environments into resilient systems teams can trust.</h2>
           <p class="reveal">I started out racking servers and answering support calls, and I never lost that operator's instinct. Over 14 years I grew into SRE and DevOps leadership, architecting, migrating, and running production platforms across AWS, Azure, DigitalOcean, and on-premise VMware.</p>
           <p class="reveal">The thread through all of it is reliability: CI/CD pipelines, containerised legacy applications, Kubernetes clusters, and monitoring that surfaces problems before users feel them, with cost, disaster recovery, and security treated as first-class concerns.</p>
+          <p class="reveal">What I enjoy most is automating the repetitive away. If I have done a task by hand twice, the third time it becomes a script &mdash; turning fragile, manual steps into something reliable, repeatable, and version-controlled. Most of the systems I am proud of started as a small script that quietly did a job no one wanted to do again.</p>
           <p class="reveal">Away from the terminal I'm a calm, steady teammate who likes to mentor, keep learning, and leave things better than I found them. I believe good systems create freedom, for the business and for the people running them, and I try to bring that same discipline to how I live and work.</p>
           <ul class="stats reveal">
             <li><strong data-count="14" data-suffix="+">0</strong><span>Years in IT &amp; DevOps</span></li>
@@ -453,8 +453,6 @@
       </nav>
     </div>
   </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js" integrity="sha384-eD5ubmuCcvTdCADWuSchJYE7wcj2nzNr0itbrh6w/KJyBiltSZ8w3VFRBSWu5YQ8" crossorigin="anonymous" defer></script>
   <script src="main.js" defer></script>
 </body>
 </html>
