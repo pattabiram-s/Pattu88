@@ -295,3 +295,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   /* Parallax on larger screens only */
   .hero, .panel, .contact-cta { background-attachment: fixed; }
 }
+
+/* ---------- Tip cards as links + tip subpages ---------- */
+a.tip { display: block; color: inherit; text-decoration: none; }
+.tip__more { display: inline-block; margin-top: 1.1rem; color: var(--accent); font-weight: 600; font-size: .85rem; }
+a.tip:hover .tip__more { color: var(--accent-strong); }
+.tip-page .tip__tag { margin-bottom: 1rem; }
+.tip-page__lead { font-size: clamp(1.1rem, 2vw, 1.3rem); color: var(--text-soft); max-width: 60ch; margin-bottom: 2.2rem; line-height: 1.6; }

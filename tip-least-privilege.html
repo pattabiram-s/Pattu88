@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Least privilege is a default, not a cleanup task · Pattabi Ram S</title>
+  <meta name="description" content="Starting at zero access and adding only what a workload proves it needs is far cheaper than clawing permissions back later." />
+  <meta name="color-scheme" content="light" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="legal-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="Home">Pattabi Ram S</a>
+      <nav class="nav__actions" aria-label="Primary">
+        <a class="btn btn--sm btn--ghost" href="index.html#tips">All tips</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container legal tip-page">
+    <span class="tip__tag">Security</span>
+    <h1>Least privilege is a default, not a cleanup task</h1>
+    <p class="tip-page__lead">Starting at zero access and adding only what a workload proves it needs is far cheaper than clawing permissions back later.</p>
+
+    <h2>Start every identity at zero</h2>
+    <p>Each IAM role, service account, security group, and database grant begins with no access. You add a permission only when something concrete fails without it. The diff that grants access becomes a readable record of exactly what the workload does.</p>
+    <h2>Why retrofitting is so painful</h2>
+    <p>Once a role is broad and live, nobody knows which of its permissions are load-bearing. Removing one risks a 2 a.m. page, so teams leave it — and broad, stale roles are precisely what turns a single compromised credential into a full breach.</p>
+    <h2>Make it the easy path</h2>
+    <p>Bake least-privilege roles into your Terraform modules and templates so the default new service is already scoped. Review access with the same seriousness as code. Prefer short-lived, assumed credentials over long-lived keys, and expire what isn’t used.</p>
+    <h2>Signs you got it wrong</h2>
+    <p>Wildcards in policies, a handful of admin roles shared across teams, and service accounts whose last-used permissions no one can explain. If you can’t say why an identity has a grant, it probably shouldn’t.</p>
+
+    <a class="back" href="index.html#tips">&larr; Back to all tips</a>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> Pattabi Ram S · Cloud &amp; DevOps Architect</p>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="index.html">Home</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="main.js" defer></script>
+</body>
+</html>

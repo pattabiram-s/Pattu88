@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Set requests, limits, and probes on every pod · Pattabi Ram S</title>
+  <meta name="description" content="Three one-time settings per workload that quietly prevent a large share of cluster incidents." />
+  <meta name="color-scheme" content="light" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="legal-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="Home">Pattabi Ram S</a>
+      <nav class="nav__actions" aria-label="Primary">
+        <a class="btn btn--sm btn--ghost" href="index.html#tips">All tips</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container legal tip-page">
+    <span class="tip__tag">Kubernetes</span>
+    <h1>Set requests, limits, and probes on every pod</h1>
+    <p class="tip-page__lead">Three one-time settings per workload that quietly prevent a large share of cluster incidents.</p>
+
+    <h2>Requests: let the scheduler do its job</h2>
+    <p>Resource requests tell Kubernetes how much a pod actually needs so it can place it sensibly. Without them the scheduler guesses, packs nodes wrong, and you get noisy-neighbour stalls that look like random slowness.</p>
+    <h2>Limits: contain the blast radius</h2>
+    <p>Limits stop one misbehaving pod from eating a node’s memory or CPU and taking its neighbours down with it. Set them deliberately — too low and you get throttling and OOMKills, too high and limits stop meaning anything.</p>
+    <h2>Probes: don’t route traffic to the not-ready</h2>
+    <p>Readiness probes keep traffic away from a container that hasn’t finished starting; liveness probes restart one that has wedged. Missing them is why deploys briefly serve errors even though ‘the pods are running’.</p>
+    <h2>A one-time cost that pays every incident</h2>
+    <p>Put all three in your base manifests or Helm chart so every new workload inherits them. It’s a few lines once, and it removes a whole category of 2 a.m. pages.</p>
+
+    <a class="back" href="index.html#tips">&larr; Back to all tips</a>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> Pattabi Ram S · Cloud &amp; DevOps Architect</p>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="index.html">Home</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="main.js" defer></script>
+</body>
+</html>

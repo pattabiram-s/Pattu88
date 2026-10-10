@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Make pipelines fail fast, loudly · Pattabi Ram S</title>
+  <meta name="description" content="A pipeline earns trust by telling developers what broke, within seconds — not ten minutes later." />
+  <meta name="color-scheme" content="light" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="legal-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="Home">Pattabi Ram S</a>
+      <nav class="nav__actions" aria-label="Primary">
+        <a class="btn btn--sm btn--ghost" href="index.html#tips">All tips</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container legal tip-page">
+    <span class="tip__tag">CI/CD</span>
+    <h1>Make pipelines fail fast, loudly</h1>
+    <p class="tip-page__lead">A pipeline earns trust by telling developers what broke, within seconds — not ten minutes later.</p>
+
+    <h2>Order stages by cost and failure rate</h2>
+    <p>Run the cheap, high-signal checks first — format, lint, type-check, unit tests — then build, then the slow integration and end-to-end suites. Most breakages are caught in the first thirty seconds, so most pushes never pay for the slow stages at all.</p>
+    <h2>Fail loudly and specifically</h2>
+    <p>A red build should name the one thing that failed and link straight to the log line. Vague “pipeline failed” messages train people to click “re-run” instead of reading. Surface the failing test, file, and assertion in the status check itself.</p>
+    <h2>Keep it fast enough to stay in flow</h2>
+    <p>Past roughly ten minutes, developers context-switch and stop watching. Cache dependencies and layers, run independent jobs in parallel, and split the suite so the common path is quick. Protect that budget — a slow pipeline quietly becomes a pipeline people route around.</p>
+    <h2>What ‘good’ looks like</h2>
+    <p>Pull-request feedback in under five minutes, a single obvious reason for every failure, and flaky tests quarantined rather than tolerated. Green means shippable, and everyone believes it.</p>
+
+    <a class="back" href="index.html#tips">&larr; Back to all tips</a>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> Pattabi Ram S · Cloud &amp; DevOps Architect</p>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="index.html">Home</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="main.js" defer></script>
+</body>
+</html>

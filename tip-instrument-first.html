@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Instrument before you optimise · Pattabi Ram S</title>
+  <meta name="description" content="You cannot tune what you cannot see. Measure first, then let the data — not a hunch — point at the bottleneck." />
+  <meta name="color-scheme" content="light" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="legal-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="Home">Pattabi Ram S</a>
+      <nav class="nav__actions" aria-label="Primary">
+        <a class="btn btn--sm btn--ghost" href="index.html#tips">All tips</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container legal tip-page">
+    <span class="tip__tag">Observability</span>
+    <h1>Instrument before you optimise</h1>
+    <p class="tip-page__lead">You cannot tune what you cannot see. Measure first, then let the data — not a hunch — point at the bottleneck.</p>
+
+    <h2>Ship the signals that explain behaviour</h2>
+    <p>Structured logs, the four golden signals (latency, traffic, errors, saturation), and a trace ID that follows a request across services. Together they turn ‘it feels slow’ into a specific span on a specific dependency.</p>
+    <h2>Correlate, don’t just collect</h2>
+    <p>A log, a metric, and a trace that can’t be joined are three dead ends. Thread a request ID through everything so you can pivot from a spiking metric to the exact traces and logs behind it.</p>
+    <h2>Let data kill the hunch</h2>
+    <p>Optimising before measuring is how teams spend a week tuning the thing that wasn’t the problem. Find the real bottleneck in the trace, change one thing, and watch the same signal to confirm it moved.</p>
+    <h2>What ‘good’ looks like</h2>
+    <p>From an alert, you can answer ‘what changed, where, and for whom’ in minutes — and you delete dashboards no one reads instead of adding more.</p>
+
+    <a class="back" href="index.html#tips">&larr; Back to all tips</a>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> Pattabi Ram S · Cloud &amp; DevOps Architect</p>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="index.html">Home</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="main.js" defer></script>
+</body>
+</html>

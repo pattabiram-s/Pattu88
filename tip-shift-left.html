@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shift security left, but gate at the right · Pattabi Ram S</title>
+  <meta name="description" content="Early feedback and a hard production gate are complements, not a choice — you want both." />
+  <meta name="color-scheme" content="light" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="legal-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="Home">Pattabi Ram S</a>
+      <nav class="nav__actions" aria-label="Primary">
+        <a class="btn btn--sm btn--ghost" href="index.html#tips">All tips</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container legal tip-page">
+    <span class="tip__tag">DevSecOps</span>
+    <h1>Shift security left, but gate at the right</h1>
+    <p class="tip-page__lead">Early feedback and a hard production gate are complements, not a choice — you want both.</p>
+
+    <h2>Make issues cheap to fix</h2>
+    <p>Scan dependencies, containers, and IaC inside the pull request, where a fix is a quick edit and a re-push. The earlier a problem surfaces, the less it costs and the more likely it is to actually get fixed.</p>
+    <h2>Still enforce at the boundary</h2>
+    <p>Shifting left reduces how much reaches production; it doesn’t replace admission control and runtime enforcement. Block unsigned images, deny risky configs at admission, and keep watching at runtime — defence in depth, not a single checkpoint.</p>
+    <h2>Gates must be fast and fair</h2>
+    <p>A security gate that is slow or noisy gets bypassed. Keep scans quick, tune out the false positives, and make the required fix obvious. A trusted gate is one people route through, not around.</p>
+    <h2>What ‘good’ looks like</h2>
+    <p>Developers see security findings as they code, production refuses what policy forbids, and neither depends on a human remembering to check.</p>
+
+    <a class="back" href="index.html#tips">&larr; Back to all tips</a>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> Pattabi Ram S · Cloud &amp; DevOps Architect</p>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="index.html">Home</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="main.js" defer></script>
+</body>
+</html>
