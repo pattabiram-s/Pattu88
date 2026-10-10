@@ -311,55 +311,55 @@
         </div>
         <p class="section__lead reveal">Field notes from building and securing production systems. Short, practical lessons I keep coming back to.</p>
         <div class="tips">
-          <a class="tip reveal" href="tip-pipelines-fail-fast.html">
+          <a class="tip reveal" href="devops-secops-tips.html#tip-pipelines-fail-fast">
             <span class="tip__tag">CI/CD</span>
             <h3>Make pipelines fail fast, loudly</h3>
             <p>Put the cheapest, most likely-to-fail checks first: lint, unit tests, then build. A ten-second failure beats a ten-minute one, and developers trust a pipeline that tells them what broke within seconds.</p>
                       <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="tip-least-privilege.html">
+          <a class="tip reveal" href="devops-secops-tips.html#tip-least-privilege">
             <span class="tip__tag">Security</span>
             <h3>Least privilege is a default, not a cleanup task</h3>
             <p>Start every IAM role, security group, and service account with zero access and add only what the workload proves it needs. Retrofitting least privilege onto a running system is far harder than building it in from commit one.</p>
                       <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="tip-terraform-state.html">
+          <a class="tip reveal" href="devops-secops-tips.html#tip-terraform-state">
             <span class="tip__tag">IaC</span>
             <h3>Treat state like production data</h3>
             <p>Remote, locked, versioned Terraform state with encryption at rest saves you from the day two engineers apply at once. Back it up, and never edit it by hand unless you have a tested recovery plan.</p>
                       <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="tip-design-for-failure.html">
+          <a class="tip reveal" href="devops-secops-tips.html#tip-design-for-failure">
             <span class="tip__tag">Reliability</span>
             <h3>Design for the failure you will actually have</h3>
             <p>Most outages are not exotic: a full disk, an expired certificate, a bad deploy, a throttled dependency. Alert on those first, rehearse the rollback, and automate the boring recovery before chasing rare edge cases.</p>
                       <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="tip-secrets-management.html">
+          <a class="tip reveal" href="devops-secops-tips.html#tip-secrets-management">
             <span class="tip__tag">Secrets</span>
             <h3>Keep secrets out of images and repos</h3>
             <p>Inject credentials at runtime from a secrets manager, scope them tightly, and rotate them on a schedule. A leaked key in a container layer or git history is a breach waiting to be indexed.</p>
                       <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="tip-instrument-first.html">
+          <a class="tip reveal" href="devops-secops-tips.html#tip-instrument-first">
             <span class="tip__tag">Observability</span>
             <h3>Instrument before you optimise</h3>
             <p>You cannot tune what you cannot see. Ship structured logs, the four golden signals, and a trace ID that follows a request end to end, then let the data, not a hunch, point at the bottleneck.</p>
                       <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="tip-right-size.html">
+          <a class="tip reveal" href="devops-secops-tips.html#tip-right-size">
             <span class="tip__tag">Cost</span>
             <h3>Right-size on real usage, not guesses</h3>
             <p>Autoscaling, scheduled shutdown of non-prod, and a monthly look at idle resources recover more spend than any one big migration. Tag everything so the bill tells you who owns what.</p>
                       <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="tip-kubernetes-pods.html">
+          <a class="tip reveal" href="devops-secops-tips.html#tip-kubernetes-pods">
             <span class="tip__tag">Kubernetes</span>
             <h3>Set requests, limits, and probes on every pod</h3>
             <p>Missing resource requests wreck the scheduler, missing limits let one pod starve a node, and missing readiness probes send traffic to containers that are not ready. All three are a one-time cost that pays off every incident.</p>
                       <span class="tip__more">Read more &rarr;</span>
           </a>
-          <a class="tip reveal" href="tip-shift-left.html">
+          <a class="tip reveal" href="devops-secops-tips.html#tip-shift-left">
             <span class="tip__tag">DevSecOps</span>
             <h3>Shift security left, but gate at the right</h3>
             <p>Scan dependencies and IaC in the pull request so issues are cheap to fix, and still enforce an admission and runtime control in production. Early feedback and a hard gate are complements, not a choice.</p>

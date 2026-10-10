@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>9 DevOps & SecOps lessons from running production · Pattabi Ram S</title>
+  <meta name="description" content="Hard-won, practical DevOps and SecOps lessons with real commands and config you can copy — CI/CD, IAM least privilege, Terraform state, reliability, secrets, observability, cost, Kubernetes and DevSecOps." />
+  <meta name="color-scheme" content="light" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" /><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="legal-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="Home">Pattabi Ram S</a>
+      <nav class="nav__actions" aria-label="Primary">
+        <a class="btn btn--sm btn--ghost" href="index.html">Back to home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container article">
+    <header class="article__header">
+      <p class="article__cat">DevOps · SecOps</p>
+      <h1>9 DevOps &amp; SecOps lessons from running production</h1>
+      <div class="article__meta">
+        <span>Pattabi Ram S</span>
+        <span>Last updated: October 10, 2026</span>
+        <span>12 min read</span>
+      </div>
+    </header>
+
+    <p class="article__lead">These are the lessons I keep coming back to after years of building and securing production systems — the ones that actually prevent 2 a.m. pages. Each is short, opinionated, and comes with the exact commands or config I’d reach for. Skim the list, or jump to what you need.</p>
+
+    <nav class="article__toc" aria-label="Contents">
+      <p class="article__toc-title">What&rsquo;s inside</p>
+      <ol>
+        <li><a href="#tip-pipelines-fail-fast">Make pipelines fail fast, loudly</a></li>
+        <li><a href="#tip-least-privilege">Least privilege is a default, not a cleanup task</a></li>
+        <li><a href="#tip-terraform-state">Treat state like production data</a></li>
+        <li><a href="#tip-design-for-failure">Design for the failure you&#x27;ll actually have</a></li>
+        <li><a href="#tip-secrets-management">Keep secrets out of images and repos</a></li>
+        <li><a href="#tip-instrument-first">Instrument before you optimise</a></li>
+        <li><a href="#tip-right-size">Right-size on real usage, not guesses</a></li>
+        <li><a href="#tip-kubernetes-pods">Set requests, limits, and probes on every pod</a></li>
+        <li><a href="#tip-shift-left">Shift security left, but gate at the right</a></li>
+      </ol>
+    </nav>
+
+    <section id="tip-pipelines-fail-fast" class="article__item">
+      <h2><span class="article__num">1.</span> Make pipelines fail fast, loudly</h2>
+      <span class="tip__tag">CI/CD</span>
+      <p class="article__item-lead">Order jobs so the cheapest, most-likely-to-fail check runs first, cap every job&#x27;s runtime, and make the red build name the one thing that broke.</p>
+      <h3>Gate the slow jobs behind a 30-second one</h3>
+    <p>Put format, lint, type-check and unit tests in one quick job, and make build and integration <code>needs:</code> it so they never run when the quick job is red. Most breakage is caught in the first thirty seconds, and you stop paying for the slow stages.</p>
+    <pre class="tip-code"><code>jobs:
+  quick:                     # ~30s, catches most breakage
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm run lint &amp;&amp; npm run typecheck
+      - run: npm test -- --bail    # stop at first failing test
+
+  build:
+    needs: quick               # never runs if quick fails
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps: [ ... ]</code></pre>
+      <h3>Make the failure name itself</h3>
+    <p>A status check that just says “pipeline failed” trains people to hit re-run. Emit annotations that point at the file and line, and write a one-line job summary so the reason shows without opening logs.</p>
+    <pre class="tip-code"><code># fail with a GitHub annotation on the exact file/line
+echo &quot;::error file=src/auth.ts,line=42::token check returns undefined&quot;
+# surface the headline in the PR checks UI
+echo &quot;### ❌ 1 test failed: auth &gt; rejects expired token&quot; &gt;&gt; &quot;$GITHUB_STEP_SUMMARY&quot;</code></pre>
+      <h3>Protect the time budget</h3>
+    <ul class="tip-list"><li>Target < 5 min PR feedback; set <code>timeout-minutes</code> on every job so a hung step fails instead of burning 6 hours.</li><li>Cache deps and Docker layers; run independent suites as a matrix in parallel.</li><li><code>pytest --maxfail=1 -q</code> / <code>--bail</code> — don’t run 400 tests to tell me the first one broke.</li></ul>
+      <h3>Don’t auto-retry flakes into silence</h3>
+    <p>A blanket “retry failed jobs 3×” hides real regressions. Quarantine a flaky test (skip + ticket) so the signal stays trustworthy — green has to mean shippable or people route around the gate.</p>
+    </section>
+    <section id="tip-least-privilege" class="article__item">
+      <h2><span class="article__num">2.</span> Least privilege is a default, not a cleanup task</h2>
+      <span class="tip__tag">Security</span>
+      <p class="article__item-lead">Grant nothing by default, then let the cloud&#x27;s own access data — not a guess — tell you the few permissions a workload truly uses.</p>
+      <h3>Delete permissions from evidence, not opinion</h3>
+    <p>You don’t have to guess what a role needs. AWS records what each role actually touched; generate a tight policy from real CloudTrail activity and drop the rest.</p>
+    <pre class="tip-code"><code># which services has this role NOT used in 90 days? (then remove them)
+aws iam generate-service-last-accessed-details --arn &quot;$ROLE_ARN&quot;
+aws iam get-service-last-accessed-details --job-id &quot;$JOB_ID&quot;
+
+# let Access Analyzer propose a least-privilege policy from CloudTrail
+aws accessanalyzer start-policy-generation \
+  --policy-generation-details &#x27;{&quot;principalArn&quot;:&quot;&#x27;$ROLE_ARN&#x27;&quot;}&#x27;</code></pre>
+      <h3>Scope with conditions, not just actions</h3>
+    <p>A tight policy constrains the resource and the context, not only the verb — so a leaked token can’t reach the whole account.</p>
+    <pre class="tip-code"><code>{
+  &quot;Effect&quot;: &quot;Allow&quot;,
+  &quot;Action&quot;: [&quot;s3:GetObject&quot;],
+  &quot;Resource&quot;: &quot;arn:aws:s3:::acme-reports/${aws:PrincipalTag/team}/*&quot;,
+  &quot;Condition&quot;: { &quot;StringEquals&quot;: { &quot;aws:ResourceAccount&quot;: &quot;111122223333&quot; } }
+}</code></pre>
+      <h3>Prefer credentials that expire</h3>
+    <ul class="tip-list"><li>CI → GitHub OIDC assume-role, not a long-lived <code>AKIA…</code> key.</li><li>EKS pods → IRSA / Pod Identity, so each pod gets its own scoped role.</li><li>Humans → SSO + short session, with just-in-time elevation for the rare admin action.</li></ul>
+      <h3>Fail the PR on broad policy</h3>
+    <p>Catch <code>"Action": "*"</code> and <code>"Resource": "*"</code> in review with checkov/tfsec so nobody ships a wildcard by reflex.</p>
+    <pre class="tip-code"><code>checkov -d . --check CKV_AWS_1,CKV_AWS_49   # flags wildcard IAM
+tfsec .                                     # aws-iam-no-policy-wildcards</code></pre>
+    </section>
+    <section id="tip-terraform-state" class="article__item">
+      <h2><span class="article__num">3.</span> Treat state like production data</h2>
+      <span class="tip__tag">IaC</span>
+      <p class="article__item-lead">Remote, locked, versioned and encrypted state — and the only way you touch it is through terraform state, after a backup.</p>
+      <h3>A backend that locks and can be rewound</h3>
+    <p>DynamoDB gives you locking so two applies can’t race; S3 versioning + encryption give you point-in-time recovery and at-rest protection. This block is the difference between “oops” and “outage.”</p>
+    <pre class="tip-code"><code>terraform {
+  backend &quot;s3&quot; {
+    bucket         = &quot;acme-tfstate&quot;
+    key            = &quot;prod/network/terraform.tfstate&quot;
+    region         = &quot;ap-south-1&quot;
+    dynamodb_table = &quot;tf-locks&quot;   # state locking
+    encrypt        = true         # SSE at rest
+    # enable Versioning on the bucket for rollback
+  }
+}</code></pre>
+      <h3>Split by blast radius</h3>
+    <p>One state file per environment and component (<code>prod/network</code>, <code>prod/data</code>…). A mistake in one plan then can’t propose destroying another, and plans stay small and reviewable.</p>
+      <h3>Do surgery with a net</h3>
+    <p>Never hand-edit the JSON. Pull a backup first, then use the state subcommands with a lock timeout so a stuck lock doesn’t wedge the team.</p>
+    <pre class="tip-code"><code>terraform state pull &gt; backup.tfstate         # before ANY surgery
+terraform state mv aws_instance.old aws_instance.new
+terraform import -lock-timeout=120s aws_s3_bucket.logs acme-logs</code></pre>
+      <h3>Catch drift automatically</h3>
+    <p>Run a read-only plan on a schedule; exit code 2 means reality diverged from code — alert on it before it becomes a mystery.</p>
+    <pre class="tip-code"><code>terraform plan -detailed-exitcode   # 0=none, 2=drift → notify</code></pre>
+    </section>
+    <section id="tip-design-for-failure" class="article__item">
+      <h2><span class="article__num">4.</span> Design for the failure you&#x27;ll actually have</h2>
+      <span class="tip__tag">Reliability</span>
+      <p class="article__item-lead">Alert the boring killers — full disks, expiring certs, bad deploys — early, and make rollback one command you have actually run.</p>
+      <h3>Alert before it hurts, not after</h3>
+    <ul class="tip-list"><li>Disk: warn at 80%, page at 90% — not when it’s 100% and the DB is already down.</li><li>Certs: check expiry daily, alert under 14 days.</li><li>Deploys: watch error rate / latency for 10 min after rollout and auto-revert on spike.</li><li>Dependencies: alert on p99 latency and throttling (429/503), not just “is it up”.</li></ul>
+    <pre class="tip-code"><code># cert expiry in days — wire into a daily check
+exp=$(echo | openssl s_client -connect api.example.com:443 2&gt;/dev/null \
+  | openssl x509 -noout -enddate | cut -d= -f2)
+echo &quot;$(( ($(date -jf &#x27;%b %d %T %Y %Z&#x27; &quot;$exp&quot; +%s) - $(date +%s)) / 86400 )) days left&quot;</code></pre>
+      <h3>Rollback is a control, not a hope</h3>
+    <p>A rollback you’ve never run is a guess. Keep the last known-good image tag, make reverting a single command, and rehearse it so shipping fast is safe.</p>
+    <pre class="tip-code"><code>kubectl rollout undo deploy/web            # to previous ReplicaSet
+kubectl rollout undo deploy/web --to-revision=42</code></pre>
+      <h3>Automate the fix you’ve done twice</h3>
+    <p>Ran the same 2 a.m. fix twice? Make the system do it the third time: liveness probes that restart a wedged process, canary/auto-rollback on error-budget burn, log-rotation before the disk fills. Turn runbooks into code the platform runs itself.</p>
+    </section>
+    <section id="tip-secrets-management" class="article__item">
+      <h2><span class="article__num">5.</span> Keep secrets out of images and repos</h2>
+      <span class="tip__tag">Secrets</span>
+      <p class="article__item-lead">Images and git history are forever and get scanned within minutes — inject credentials at runtime, catch leaks before merge, and rotate on a schedule.</p>
+      <h3>Prove the image and history are clean</h3>
+    <p>A secret in a container layer survives even after you “delete” it, and a committed key stays in git history. Scan both — in pre-commit and in CI — so a leak is caught in the PR, not by a bot crawling GitHub.</p>
+    <pre class="tip-code"><code>gitleaks detect --source . --redact        # repo + history
+docker history --no-trunc myimg:latest     # did a secret land in a layer?
+trivy image --scanners secret myimg:latest</code></pre>
+      <h3>Inject at runtime, scoped and short-lived</h3>
+    <p>The app should receive a secret, never ship with one. Mount it from a secrets manager at start-up and scope it tightly; prefer tokens with a TTL over permanent keys.</p>
+    <pre class="tip-code"><code># External Secrets Operator: K8s Secret synced from the real vault
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+spec:
+  refreshInterval: 1h
+  secretStoreRef: { name: aws-secrets, kind: ClusterSecretStore }
+  target: { name: db-credentials }
+  data:
+    - secretKey: password
+      remoteRef: { key: prod/db, property: password }</code></pre>
+      <h3>Make rotation routine</h3>
+    <ul class="tip-list"><li>Automate rotation on a schedule so a key you’re afraid to rotate never exists.</li><li>On a leak: revoke first (kill the live key), then rotate — order matters.</li><li>Block the commit at the source with a pre-commit hook: <code>gitleaks protect --staged</code>.</li></ul>
+    </section>
+    <section id="tip-instrument-first" class="article__item">
+      <h2><span class="article__num">6.</span> Instrument before you optimise</h2>
+      <span class="tip__tag">Observability</span>
+      <p class="article__item-lead">You can&#x27;t tune what you can&#x27;t see. Emit structured logs, RED/USE metrics and a trace id threaded through everything — then pivot metric → trace → log.</p>
+      <h3>Log structured, with the ids that let you join</h3>
+    <p>Plain-text logs are a dead end under load. Emit JSON with a <code>trace_id</code> so you can jump from a spiking metric to the exact request.</p>
+    <pre class="tip-code"><code>{&quot;ts&quot;:&quot;2026-10-10T09:12:04Z&quot;,&quot;level&quot;:&quot;error&quot;,&quot;svc&quot;:&quot;checkout&quot;,
+ &quot;trace_id&quot;:&quot;4bf92f3577b34da6&quot;,&quot;user&quot;:&quot;u_8831&quot;,
+ &quot;msg&quot;:&quot;charge failed&quot;,&quot;err&quot;:&quot;gateway timeout&quot;,&quot;latency_ms&quot;:812}</code></pre>
+      <h3>Measure the four signals that explain behaviour</h3>
+    <ul class="tip-list"><li>Services → <b>RED</b>: Rate, Errors, Duration (p50/p95/p99).</li><li>Resources → <b>USE</b>: Utilisation, Saturation, Errors.</li><li>Alert on symptoms users feel (error rate, p99) — not on CPU for its own sake.</li></ul>
+    <pre class="tip-code"><code># p99 latency per route, last 5 min (PromQL)
+histogram_quantile(0.99,
+  sum by (le, route) (rate(http_request_duration_seconds_bucket[5m])))</code></pre>
+      <h3>Thread one id end to end</h3>
+    <p>Propagate the W3C <code>traceparent</code> header across every hop (OpenTelemetry auto-instrumentation does most of it). With exemplars you click a point on the latency graph and land on the slow trace — the bottleneck names itself instead of you guessing.</p>
+    </section>
+    <section id="tip-right-size" class="article__item">
+      <h2><span class="article__num">7.</span> Right-size on real usage, not guesses</h2>
+      <span class="tip__tag">Cost</span>
+      <p class="article__item-lead">The steady wins — sizing from measured usage, switching off idle non-prod, tagging for ownership — beat any one big migration.</p>
+      <h3>Size from what it actually uses</h3>
+    <p>Over-provisioning “to be safe” is the biggest line on most bills. Read real usage and let the tooling recommend the shape.</p>
+    <pre class="tip-code"><code>kubectl top pods -A --sort-by=memory     # who’s actually using what
+# EKS: VerticalPodAutoscaler in recommend-only mode suggests requests
+# AWS: Compute Optimizer flags over-provisioned EC2/EBS/Lambda</code></pre>
+      <h3>Switch off what no one is using</h3>
+    <p>Dev and staging that run 24/7 for a 9-to-6 team pay triple for idle time. Scale non-prod to zero outside hours.</p>
+    <pre class="tip-code"><code># kube-downscaler: annotate a namespace to sleep nights + weekends
+downscaler/uptime: &quot;Mon-Fri 08:00-20:00 Asia/Kolkata&quot;</code></pre>
+      <h3>Find the quiet waste</h3>
+    <pre class="tip-code"><code># unattached EBS volumes still billing
+aws ec2 describe-volumes --filters Name=status,Values=available \
+  --query &#x27;Volumes[].{id:VolumeId,GiB:Size}&#x27;
+# load balancers with zero healthy targets, old snapshots, idle EIPs …</code></pre>
+      <h3>Make the bill accountable</h3>
+    <p>Tag every resource with <code>owner</code>, <code>env</code> and <code>service</code>, and enforce it (AWS Config / SCP). Untagged spend is unowned spend — and a 30-minute monthly review of idle resources recovers more, more reliably, than a yearly re-architecture.</p>
+    </section>
+    <section id="tip-kubernetes-pods" class="article__item">
+      <h2><span class="article__num">8.</span> Set requests, limits, and probes on every pod</h2>
+      <span class="tip__tag">Kubernetes</span>
+      <p class="article__item-lead">Four fields per workload that quietly prevent a large share of cluster incidents — set them once in your base manifest and inherit them everywhere.</p>
+      <h3>The spec, and the failure each field prevents</h3>
+    <pre class="tip-code"><code>resources:
+  requests: { cpu: 100m, memory: 128Mi }   # scheduler places you sanely
+  limits:   { cpu: 500m, memory: 256Mi }   # one pod can’t starve the node
+readinessProbe:                            # no traffic until actually ready
+  httpGet: { path: /healthz, port: 8080 }
+  initialDelaySeconds: 5
+  periodSeconds: 10
+livenessProbe:                             # restart if wedged
+  httpGet: { path: /healthz, port: 8080 }
+  initialDelaySeconds: 15
+  periodSeconds: 20
+startupProbe:                              # slow starters: don’t kill while booting
+  httpGet: { path: /healthz, port: 8080 }
+  failureThreshold: 30
+  periodSeconds: 5</code></pre>
+      <h3>Why each one matters</h3>
+    <ul class="tip-list"><li>No <b>requests</b> → the scheduler guesses, packs nodes wrong, random noisy-neighbour stalls.</li><li>No <b>memory limit</b> → one leaking pod OOMs the whole node and its neighbours.</li><li>No <b>readiness</b> → deploys briefly serve 502s because traffic hits not-ready containers.</li><li>No <b>startup probe</b> → liveness kills a slow-booting app in a restart loop.</li></ul>
+      <h3>Tune with data, then enforce</h3>
+    <p>Set initial numbers from <code>kubectl top</code> / VPA recommendations, add a <code>PodDisruptionBudget</code> so drains don’t take you to zero, and bake all of it into the Helm chart base so every new service inherits it — a few lines once, a whole class of 2 a.m. pages gone.</p>
+    </section>
+    <section id="tip-shift-left" class="article__item">
+      <h2><span class="article__num">9.</span> Shift security left, but gate at the right</h2>
+      <span class="tip__tag">DevSecOps</span>
+      <p class="article__item-lead">Catch issues in the PR where they&#x27;re cheap to fix, and still enforce a hard policy at admission and runtime — both, not either.</p>
+      <h3>Scan in the pull request</h3>
+    <p>Find the problem where the fix is a quick edit: images, IaC and secrets, all on the PR.</p>
+    <pre class="tip-code"><code>trivy fs --scanners vuln,secret,misconfig .   # deps + keys + bad config
+tfsec .            # or: checkov -d .            # IaC misconfig
+gitleaks detect --source . --redact            # committed secrets</code></pre>
+      <h3>Enforce at admission — shifting left doesn’t replace the gate</h3>
+    <p>Early feedback reduces what reaches prod; it doesn’t guarantee it. Block the risky things at the cluster door with a policy engine.</p>
+    <pre class="tip-code"><code># Kyverno: refuse :latest and unsigned images
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: disallow-latest
+      match: { any: [{ resources: { kinds: [Pod] } }] }
+      validate:
+        message: &quot;Pin an image tag; :latest is not allowed&quot;
+        pattern: { spec: { containers: [{ image: &quot;!*:latest&quot; }] } }</code></pre>
+      <h3>Verify provenance at runtime</h3>
+    <pre class="tip-code"><code>cosign verify --key cosign.pub registry/acme/web:1.8.2   # signed by us?</code></pre>
+      <h3>Keep the gate trusted</h3>
+    <p>A slow or noisy gate gets bypassed. Keep scans fast, tune out false positives, and make the required fix obvious — a gate people route <i>through</i>, not around.</p>
+    </section>
+
+    <a class="back" href="index.html">&larr; Back to home</a>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> Pattabi Ram S · Cloud &amp; DevOps Architect</p>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="index.html">Home</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="main.js" defer></script>
+</body>
+</html>
