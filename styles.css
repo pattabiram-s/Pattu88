@@ -302,3 +302,11 @@ a.tip { display: block; color: inherit; text-decoration: none; }
 a.tip:hover .tip__more { color: var(--accent-strong); }
 .tip-page .tip__tag { margin-bottom: 1rem; }
 .tip-page__lead { font-size: clamp(1.1rem, 2vw, 1.3rem); color: var(--text-soft); max-width: 60ch; margin-bottom: 2.2rem; line-height: 1.6; }
+
+/* ---------- Tip subpage: code + lists ---------- */
+.tip-code { background: #1b2230; color: #e6edf3; border-radius: 10px; padding: 1rem 1.15rem; margin: 1rem 0 1.4rem; overflow-x: auto; font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .82rem; line-height: 1.6; -webkit-overflow-scrolling: touch; }
+.tip-code code { font-family: inherit; white-space: pre; }
+.tip-page :not(.tip-code) > code, .tip-page p code, .tip-list code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: .86em; background: #eceae4; padding: .08em .38em; border-radius: 5px; }
+.tip-list { margin: .4rem 0 1.4rem; padding-left: 1.2rem; list-style: disc; display: flex; flex-direction: column; gap: .55rem; color: var(--text-soft); }
+.tip-list li { line-height: 1.6; }
+.tip-page h2 { margin-top: 2.2rem; }

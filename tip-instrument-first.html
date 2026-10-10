@@ -4,12 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Instrument before you optimise · Pattabi Ram S</title>
-  <meta name="description" content="You cannot tune what you cannot see. Measure first, then let the data — not a hunch — point at the bottleneck." />
+  <meta name="description" content="You can&#x27;t tune what you can&#x27;t see. Emit structured logs, RED/USE metrics and a trace id threaded through everything — then pivot metric → trace → log." />
   <meta name="color-scheme" content="light" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" /><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="legal-page">
@@ -26,16 +26,20 @@
   <main id="main" class="container legal tip-page">
     <span class="tip__tag">Observability</span>
     <h1>Instrument before you optimise</h1>
-    <p class="tip-page__lead">You cannot tune what you cannot see. Measure first, then let the data — not a hunch — point at the bottleneck.</p>
+    <p class="tip-page__lead">You can&#x27;t tune what you can&#x27;t see. Emit structured logs, RED/USE metrics and a trace id threaded through everything — then pivot metric → trace → log.</p>
 
-    <h2>Ship the signals that explain behaviour</h2>
-    <p>Structured logs, the four golden signals (latency, traffic, errors, saturation), and a trace ID that follows a request across services. Together they turn ‘it feels slow’ into a specific span on a specific dependency.</p>
-    <h2>Correlate, don’t just collect</h2>
-    <p>A log, a metric, and a trace that can’t be joined are three dead ends. Thread a request ID through everything so you can pivot from a spiking metric to the exact traces and logs behind it.</p>
-    <h2>Let data kill the hunch</h2>
-    <p>Optimising before measuring is how teams spend a week tuning the thing that wasn’t the problem. Find the real bottleneck in the trace, change one thing, and watch the same signal to confirm it moved.</p>
-    <h2>What ‘good’ looks like</h2>
-    <p>From an alert, you can answer ‘what changed, where, and for whom’ in minutes — and you delete dashboards no one reads instead of adding more.</p>
+    <h2>Log structured, with the ids that let you join</h2>
+    <p>Plain-text logs are a dead end under load. Emit JSON with a <code>trace_id</code> so you can jump from a spiking metric to the exact request.</p>
+    <pre class="tip-code"><code>{&quot;ts&quot;:&quot;2026-10-10T09:12:04Z&quot;,&quot;level&quot;:&quot;error&quot;,&quot;svc&quot;:&quot;checkout&quot;,
+ &quot;trace_id&quot;:&quot;4bf92f3577b34da6&quot;,&quot;user&quot;:&quot;u_8831&quot;,
+ &quot;msg&quot;:&quot;charge failed&quot;,&quot;err&quot;:&quot;gateway timeout&quot;,&quot;latency_ms&quot;:812}</code></pre>
+    <h2>Measure the four signals that explain behaviour</h2>
+    <ul class="tip-list"><li>Services → <b>RED</b>: Rate, Errors, Duration (p50/p95/p99).</li><li>Resources → <b>USE</b>: Utilisation, Saturation, Errors.</li><li>Alert on symptoms users feel (error rate, p99) — not on CPU for its own sake.</li></ul>
+    <pre class="tip-code"><code># p99 latency per route, last 5 min (PromQL)
+histogram_quantile(0.99,
+  sum by (le, route) (rate(http_request_duration_seconds_bucket[5m])))</code></pre>
+    <h2>Thread one id end to end</h2>
+    <p>Propagate the W3C <code>traceparent</code> header across every hop (OpenTelemetry auto-instrumentation does most of it). With exemplars you click a point on the latency graph and land on the slow trace — the bottleneck names itself instead of you guessing.</p>
 
     <a class="back" href="index.html#tips">&larr; Back to all tips</a>
   </main>

@@ -4,12 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Set requests, limits, and probes on every pod · Pattabi Ram S</title>
-  <meta name="description" content="Three one-time settings per workload that quietly prevent a large share of cluster incidents." />
+  <meta name="description" content="Four fields per workload that quietly prevent a large share of cluster incidents — set them once in your base manifest and inherit them everywhere." />
   <meta name="color-scheme" content="light" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" /><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="legal-page">
@@ -26,16 +26,28 @@
   <main id="main" class="container legal tip-page">
     <span class="tip__tag">Kubernetes</span>
     <h1>Set requests, limits, and probes on every pod</h1>
-    <p class="tip-page__lead">Three one-time settings per workload that quietly prevent a large share of cluster incidents.</p>
+    <p class="tip-page__lead">Four fields per workload that quietly prevent a large share of cluster incidents — set them once in your base manifest and inherit them everywhere.</p>
 
-    <h2>Requests: let the scheduler do its job</h2>
-    <p>Resource requests tell Kubernetes how much a pod actually needs so it can place it sensibly. Without them the scheduler guesses, packs nodes wrong, and you get noisy-neighbour stalls that look like random slowness.</p>
-    <h2>Limits: contain the blast radius</h2>
-    <p>Limits stop one misbehaving pod from eating a node’s memory or CPU and taking its neighbours down with it. Set them deliberately — too low and you get throttling and OOMKills, too high and limits stop meaning anything.</p>
-    <h2>Probes: don’t route traffic to the not-ready</h2>
-    <p>Readiness probes keep traffic away from a container that hasn’t finished starting; liveness probes restart one that has wedged. Missing them is why deploys briefly serve errors even though ‘the pods are running’.</p>
-    <h2>A one-time cost that pays every incident</h2>
-    <p>Put all three in your base manifests or Helm chart so every new workload inherits them. It’s a few lines once, and it removes a whole category of 2 a.m. pages.</p>
+    <h2>The spec, and the failure each field prevents</h2>
+    <pre class="tip-code"><code>resources:
+  requests: { cpu: 100m, memory: 128Mi }   # scheduler places you sanely
+  limits:   { cpu: 500m, memory: 256Mi }   # one pod can’t starve the node
+readinessProbe:                            # no traffic until actually ready
+  httpGet: { path: /healthz, port: 8080 }
+  initialDelaySeconds: 5
+  periodSeconds: 10
+livenessProbe:                             # restart if wedged
+  httpGet: { path: /healthz, port: 8080 }
+  initialDelaySeconds: 15
+  periodSeconds: 20
+startupProbe:                              # slow starters: don’t kill while booting
+  httpGet: { path: /healthz, port: 8080 }
+  failureThreshold: 30
+  periodSeconds: 5</code></pre>
+    <h2>Why each one matters</h2>
+    <ul class="tip-list"><li>No <b>requests</b> → the scheduler guesses, packs nodes wrong, random noisy-neighbour stalls.</li><li>No <b>memory limit</b> → one leaking pod OOMs the whole node and its neighbours.</li><li>No <b>readiness</b> → deploys briefly serve 502s because traffic hits not-ready containers.</li><li>No <b>startup probe</b> → liveness kills a slow-booting app in a restart loop.</li></ul>
+    <h2>Tune with data, then enforce</h2>
+    <p>Set initial numbers from <code>kubectl top</code> / VPA recommendations, add a <code>PodDisruptionBudget</code> so drains don’t take you to zero, and bake all of it into the Helm chart base so every new service inherits it — a few lines once, a whole class of 2 a.m. pages gone.</p>
 
     <a class="back" href="index.html#tips">&larr; Back to all tips</a>
   </main>

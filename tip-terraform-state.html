@@ -4,12 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Treat state like production data · Pattabi Ram S</title>
-  <meta name="description" content="Your infrastructure state file is as critical as a production database — protect it, version it, and never hand-edit it casually." />
+  <meta name="description" content="Remote, locked, versioned and encrypted state — and the only way you touch it is through terraform state, after a backup." />
   <meta name="color-scheme" content="light" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" /><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="legal-page">
@@ -26,16 +26,30 @@
   <main id="main" class="container legal tip-page">
     <span class="tip__tag">IaC</span>
     <h1>Treat state like production data</h1>
-    <p class="tip-page__lead">Your infrastructure state file is as critical as a production database — protect it, version it, and never hand-edit it casually.</p>
+    <p class="tip-page__lead">Remote, locked, versioned and encrypted state — and the only way you touch it is through terraform state, after a backup.</p>
 
-    <h2>Remote, locked, versioned, encrypted</h2>
-    <p>Keep Terraform state in a remote backend with state locking, object versioning, and encryption at rest. Locking is what saves you the day two engineers run apply at the same time; versioning is what saves you when an apply goes wrong.</p>
-    <h2>Never edit state by hand without a net</h2>
-    <p>Reach for terraform state mv, import, and rm over editing JSON directly. If you must surgery the state, back it up first and have a tested path to roll back. A corrupted state file can make Terraform try to destroy and recreate live infrastructure.</p>
-    <h2>Blast radius and drift</h2>
-    <p>Split state by environment and by blast radius so a mistake in one stack can’t touch another. Run plan in CI on every change and alert on drift — infrastructure that changed outside code is how ‘it works in staging’ stories begin.</p>
-    <h2>What ‘good’ looks like</h2>
-    <p>Every environment reproducible from code, plans reviewed before apply, and a state file you could lose and rebuild without panic because it is backed up and access-controlled.</p>
+    <h2>A backend that locks and can be rewound</h2>
+    <p>DynamoDB gives you locking so two applies can’t race; S3 versioning + encryption give you point-in-time recovery and at-rest protection. This block is the difference between “oops” and “outage.”</p>
+    <pre class="tip-code"><code>terraform {
+  backend &quot;s3&quot; {
+    bucket         = &quot;acme-tfstate&quot;
+    key            = &quot;prod/network/terraform.tfstate&quot;
+    region         = &quot;ap-south-1&quot;
+    dynamodb_table = &quot;tf-locks&quot;   # state locking
+    encrypt        = true         # SSE at rest
+    # enable Versioning on the bucket for rollback
+  }
+}</code></pre>
+    <h2>Split by blast radius</h2>
+    <p>One state file per environment and component (<code>prod/network</code>, <code>prod/data</code>…). A mistake in one plan then can’t propose destroying another, and plans stay small and reviewable.</p>
+    <h2>Do surgery with a net</h2>
+    <p>Never hand-edit the JSON. Pull a backup first, then use the state subcommands with a lock timeout so a stuck lock doesn’t wedge the team.</p>
+    <pre class="tip-code"><code>terraform state pull &gt; backup.tfstate         # before ANY surgery
+terraform state mv aws_instance.old aws_instance.new
+terraform import -lock-timeout=120s aws_s3_bucket.logs acme-logs</code></pre>
+    <h2>Catch drift automatically</h2>
+    <p>Run a read-only plan on a schedule; exit code 2 means reality diverged from code — alert on it before it becomes a mystery.</p>
+    <pre class="tip-code"><code>terraform plan -detailed-exitcode   # 0=none, 2=drift → notify</code></pre>
 
     <a class="back" href="index.html#tips">&larr; Back to all tips</a>
   </main>

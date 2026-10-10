@@ -4,12 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Least privilege is a default, not a cleanup task · Pattabi Ram S</title>
-  <meta name="description" content="Starting at zero access and adding only what a workload proves it needs is far cheaper than clawing permissions back later." />
+  <meta name="description" content="Grant nothing by default, then let the cloud&#x27;s own access data — not a guess — tell you the few permissions a workload truly uses." />
   <meta name="color-scheme" content="light" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" /><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="legal-page">
@@ -26,16 +26,31 @@
   <main id="main" class="container legal tip-page">
     <span class="tip__tag">Security</span>
     <h1>Least privilege is a default, not a cleanup task</h1>
-    <p class="tip-page__lead">Starting at zero access and adding only what a workload proves it needs is far cheaper than clawing permissions back later.</p>
+    <p class="tip-page__lead">Grant nothing by default, then let the cloud&#x27;s own access data — not a guess — tell you the few permissions a workload truly uses.</p>
 
-    <h2>Start every identity at zero</h2>
-    <p>Each IAM role, service account, security group, and database grant begins with no access. You add a permission only when something concrete fails without it. The diff that grants access becomes a readable record of exactly what the workload does.</p>
-    <h2>Why retrofitting is so painful</h2>
-    <p>Once a role is broad and live, nobody knows which of its permissions are load-bearing. Removing one risks a 2 a.m. page, so teams leave it — and broad, stale roles are precisely what turns a single compromised credential into a full breach.</p>
-    <h2>Make it the easy path</h2>
-    <p>Bake least-privilege roles into your Terraform modules and templates so the default new service is already scoped. Review access with the same seriousness as code. Prefer short-lived, assumed credentials over long-lived keys, and expire what isn’t used.</p>
-    <h2>Signs you got it wrong</h2>
-    <p>Wildcards in policies, a handful of admin roles shared across teams, and service accounts whose last-used permissions no one can explain. If you can’t say why an identity has a grant, it probably shouldn’t.</p>
+    <h2>Delete permissions from evidence, not opinion</h2>
+    <p>You don’t have to guess what a role needs. AWS records what each role actually touched; generate a tight policy from real CloudTrail activity and drop the rest.</p>
+    <pre class="tip-code"><code># which services has this role NOT used in 90 days? (then remove them)
+aws iam generate-service-last-accessed-details --arn &quot;$ROLE_ARN&quot;
+aws iam get-service-last-accessed-details --job-id &quot;$JOB_ID&quot;
+
+# let Access Analyzer propose a least-privilege policy from CloudTrail
+aws accessanalyzer start-policy-generation \
+  --policy-generation-details &#x27;{&quot;principalArn&quot;:&quot;&#x27;$ROLE_ARN&#x27;&quot;}&#x27;</code></pre>
+    <h2>Scope with conditions, not just actions</h2>
+    <p>A tight policy constrains the resource and the context, not only the verb — so a leaked token can’t reach the whole account.</p>
+    <pre class="tip-code"><code>{
+  &quot;Effect&quot;: &quot;Allow&quot;,
+  &quot;Action&quot;: [&quot;s3:GetObject&quot;],
+  &quot;Resource&quot;: &quot;arn:aws:s3:::acme-reports/${aws:PrincipalTag/team}/*&quot;,
+  &quot;Condition&quot;: { &quot;StringEquals&quot;: { &quot;aws:ResourceAccount&quot;: &quot;111122223333&quot; } }
+}</code></pre>
+    <h2>Prefer credentials that expire</h2>
+    <ul class="tip-list"><li>CI → GitHub OIDC assume-role, not a long-lived <code>AKIA…</code> key.</li><li>EKS pods → IRSA / Pod Identity, so each pod gets its own scoped role.</li><li>Humans → SSO + short session, with just-in-time elevation for the rare admin action.</li></ul>
+    <h2>Fail the PR on broad policy</h2>
+    <p>Catch <code>"Action": "*"</code> and <code>"Resource": "*"</code> in review with checkov/tfsec so nobody ships a wildcard by reflex.</p>
+    <pre class="tip-code"><code>checkov -d . --check CKV_AWS_1,CKV_AWS_49   # flags wildcard IAM
+tfsec .                                     # aws-iam-no-policy-wildcards</code></pre>
 
     <a class="back" href="index.html#tips">&larr; Back to all tips</a>
   </main>
